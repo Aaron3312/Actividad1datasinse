@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
 // una funcion recursiba que encuentre el numero mas pequeño en una lista
