@@ -1,0 +1,3 @@
+C:/Users/joses/OneDrive/Escritorio/Pruebas_cpp/cmake-build-debug/CMakeFiles/Pruebas_cpp.dir
+C:/Users/joses/OneDrive/Escritorio/Pruebas_cpp/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/joses/OneDrive/Escritorio/Pruebas_cpp/cmake-build-debug/CMakeFiles/rebuild_cache.dir
