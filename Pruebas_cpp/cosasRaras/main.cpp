@@ -1,6 +1,10 @@
 //funcion recursiva que suma todos los numeros de 1 a n
 // n es un argumento de la funcion
-
+//Todos son argumentos de la funcion main (int argc, char* argv[])
+// int main(int argc, char* argv[])
+// {
+//    int n;
+//   cout << "Introduzca un numero: ";
 #include <iostream>
 using namespace std;
 
