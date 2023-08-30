@@ -14,15 +14,76 @@
 //Como parte de la documentación deberá incluirse la complejidad de cada una de ellas.
 
 #include <iostream>
+#include <ctime>
+#include <random>
 
 using namespace std;
 
 //ordenaInserción
+void ordenaInsercion(int arr[], int n){
+    int aux;
+    for(int i = 0; i < n; i++){
+        aux = arr[i];
+        int j = i - 1;
+        while(j >= 0 && arr[j] > aux){
+            arr[j+1] = arr[j];
+            j--;
+        }
+        arr[j+1] = aux;
+    }
+}
 
-//ordenaBurbuja
+
+//ordenaBurbuja 
+void ordenaBurbuja(int arr[], int n){
+    int aux;
+    for(int i = 0; i < n -1; i++){
+        for(int j = 0; j < n-1; j++){
+            if(arr[j] > arr [j+1]){
+                aux = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = aux;
+            }
+        }
+    }
+}
 
 //ordenaMerge
 
 //busqSecuencial
 
 //busqBinaria (Iterativo & Recursivo)	
+
+//funcion main generando un vector int de n numeros aleatorios
+int main() {
+    int n; int arr[n]; //declaramos el vector y la cantidad de numeros que va a tener
+    cout << "Introduzca la cantidad de numeros que desea: "; //pedimos la cantidad de numeros que va a tener el vector
+    cin >> n; 
+    //generamos los numeros aleatorios
+    srand(time(NULL));
+    for(int i = 0; i < n; i++){
+        arr[i] = rand() % 100;
+    }
+    //imprimimos el vector para conocer sus valores
+    cout << "Vector: ";
+    for(int i = 0; i < n; i++){
+        cout << arr[i] << " ";
+    }
+    cout << endl; //un salto de linea para que se vea mejor
+
+    //llamamos a las funciones de ordenamiento
+    ordenaInsercion(arr, n);
+    cout << "Vector ordenado por insercion: ";
+    for(int i = 0; i < n; i++){
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+    ordenaBurbuja(arr, n);
+    cout << "Vector ordenado por burbuja: ";
+    for(int i = 0; i < n; i++){
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+    return 0;
+
+}
