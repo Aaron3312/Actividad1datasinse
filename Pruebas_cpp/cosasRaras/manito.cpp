@@ -35,4 +35,7 @@ int main()
     return 0;
     
     // thomas h cormen introduccion a los algoritmos
-
+// cual era el comando para generar .exe?
+// g++ -o nombreDelEjecutable nombreDelArchivo.cpp
+// como se ejecuta el archivo?
+// ./nombreDelEjecutable

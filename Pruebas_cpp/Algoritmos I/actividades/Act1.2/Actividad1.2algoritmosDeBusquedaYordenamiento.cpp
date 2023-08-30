@@ -20,16 +20,17 @@
 using namespace std;
 
 //ordenaInserción
-void ordenaInsercion(int arr[], int n){
-    int aux;
-    for(int i = 0; i < n; i++){
-        aux = arr[i];
+//Ordene en forma ascendente los datos con el método de Inserción
+void ordenaInsercion(int arr[], int n) {
+    int auxiliar;
+    for (int i = 1; i < n; i++) {
+        auxiliar = arr[i];
         int j = i - 1;
-        while(j >= 0 && arr[j] > aux){
-            arr[j+1] = arr[j];
+        while (j >= 0 && arr[j] > auxiliar) {
+            arr[j + 1] = arr[j];
             j--;
         }
-        arr[j+1] = aux;
+        arr[j + 1] = auxiliar;
     }
 }
 
@@ -50,20 +51,68 @@ void ordenaBurbuja(int arr[], int n){
 
 //ordenaMerge
 
+void ordenaMerge(int arr[], int n){
+    int aux;
+    for(int i = 0; i < n; i++){
+        aux = arr[i];
+        int j = i - 1;
+        while(j >= 0 && arr[j] > aux){
+            arr[j+1] = arr[j];
+            j--;
+        }
+        arr[j+1] = aux;
+    }
+}
+
 //busqSecuencial
 
+void busqSecuencial(int arr[], int n){
+    int aux;
+    for(int i = 0; i < n; i++){
+        aux = arr[i];
+        int j = i - 1;
+        while(j >= 0 && arr[j] > aux){
+            arr[j+1] = arr[j];
+            j--;
+        }
+        arr[j+1] = aux;
+    }
+}
+
 //busqBinaria (Iterativo & Recursivo)	
+void busqBinaria(int arr[], int n){
+    int aux;
+    for(int i = 0; i < n; i++){
+        aux = arr[i];
+        int j = i - 1;
+        while(j >= 0 && arr[j] > aux){
+            arr[j+1] = arr[j];
+            j--;
+        }
+        arr[j+1] = aux;
+    }
+}
+//declaramos una funcion que genere numeros aleatorios
+int randoms(int min, int max){
+    return rand() % (max - min + 1) + min;
+}
+
 
 //funcion main generando un vector int de n numeros aleatorios
 int main() {
-    int n; int arr[n]; //declaramos el vector y la cantidad de numeros que va a tener
+    cout << "Bienvenido" << endl;
+    int n;  //declaramos el vector y la cantidad de numeros que va a tener
     cout << "Introduzca la cantidad de numeros que desea: "; //pedimos la cantidad de numeros que va a tener el vector
     cin >> n; 
-    //generamos los numeros aleatorios
+    int arr[n];
+    
+    //generamos los numeros aleatorios de 1 a n
     srand(time(NULL));
     for(int i = 0; i < n; i++){
-        arr[i] = rand() % 100;
+        arr[i] = randoms(1, n);
     }
+    
+
     //imprimimos el vector para conocer sus valores
     cout << "Vector: ";
     for(int i = 0; i < n; i++){
@@ -71,19 +120,46 @@ int main() {
     }
     cout << endl; //un salto de linea para que se vea mejor
 
-    //llamamos a las funciones de ordenamiento
+    //llamamos a las funciones de ordenamiento y busqueda para que se ejecuten y ordenen el vector 
+
+    //empezamos con la funcion de ordenamiento por insercion
     ordenaInsercion(arr, n);
     cout << "Vector ordenado por insercion: ";
     for(int i = 0; i < n; i++){
         cout << arr[i] << " ";
     }
-    cout << endl;
+    cout << endl; //otro salto de linea para que se vea mejor
+
+    //ahora llamamos a la funcion de ordenamiento burbuja
     ordenaBurbuja(arr, n);
     cout << "Vector ordenado por burbuja: ";
     for(int i = 0; i < n; i++){
         cout << arr[i] << " ";
     }
     cout << endl;
-    return 0;
 
+    //ahora llamamos a la funcion de ordenamiento merge
+    ordenaMerge(arr, n);
+    cout << "Vector ordenado por burbuja: ";
+    for(int i = 0; i < n; i++){
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+
+    //ahora llamamos a la funcion de busqueda secuencial
+    busqSecuencial(arr, n);
+    cout << "Vector ordenado por busqueda secuencial: ";
+    for(int i = 0; i < n; i++){
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+
+    //ahora llamamos a la funcion de busqueda binaria
+    busqBinaria(arr, n);
+    cout << "Vector ordenado por busqueda binaria: ";
+    for(int i = 0; i < n; i++){
+        cout << arr[i] << " ";
+    }
+
+    return 0;
 }
