@@ -16,7 +16,6 @@
 #include <iostream>
 #include <ctime>
 #include <random>
-
 using namespace std;
 
 // ordenaInserción tiene un complejidad de O(n^2).
@@ -115,14 +114,13 @@ void ordenaMerge(int arr[], int izq, int derecho)
     }
 }
 
-
 // busqSecuencial
 // Este es una funcion de busqueda secuencial que busca un numero en el arreglo y regresa el indice donde se encuentra
-// arroja -1 en caso de que no se localice el numero. 
+// arroja -1 en caso de que no se localice el numero.
 // Tiene una complejidad de O(n).
-
 void busqSecuencial(int arr[], int dato, int n)
 {
+    cout << "Busqueda secuencial" << endl;
     int i = 0;
     for (i = 0; i < n; i++)
     {
@@ -136,28 +134,70 @@ void busqSecuencial(int arr[], int dato, int n)
         cout << "-1" << endl;
     }
     else
-    {
+    {   
         cout << "El numero se encuentra en el indice " << i << endl;
     }
-
 }
 
 // busqBinaria (Iterativo & Recursivo)
-void busqBinaria(int arr[], int n)
+// Este es una funcion de busqueda binaria que busca un numero en el arreglo y regresa el indice donde se encuentra
+// arroja -1 en caso de que no se localice el numero.
+// Tiene una complejidad de O(log(n)).
+void busqBinaria(int arr[], int n,int dato)
 {
-    int aux;
-    for (int i = 0; i < n; i++)
+    cout << "Busqueda binaria" << endl;
+    //primero el metodo iterativo
+    int inicio = 0;
+    int fin = n - 1;
+    int medio;
+    while (inicio <= fin)
     {
-        aux = arr[i];
-        int j = i - 1;
-        while (j >= 0 && arr[j] > aux)
+        medio = (inicio + fin) / 2;
+        if (dato == arr[medio])
         {
-            arr[j + 1] = arr[j];
-            j--;
+            cout << "El numero se encuentra en el indice " << medio << endl;
+            break;
         }
-        arr[j + 1] = aux;
+        else if (dato < arr[medio])
+        {
+            fin = medio - 1;
+        }
+        else
+        {
+            inicio = medio + 1;
+        }
+    }
+    if (inicio > fin)
+    {
+        cout << "-1" << endl;
     }
 }
+    // ahora el metodo recursivo
+    // Tiene una complejidad de O(log(n)).
+void busqBinariaRE(int arr[], int n,int dato, int izquierd, int derecha)
+{
+
+    int medio = (izquierd + derecha) / 2; // calculamos el medio
+    if (izquierd <= derecha)
+    {
+        if (dato == arr[medio])
+        {
+            cout << "Busqueda binaria recursiva" << endl;
+            cout << "El numero se encuentra en el indice " << medio << endl;
+        }
+        else if (dato < arr[medio])
+        {
+            derecha = medio - 1;
+            busqBinariaRE(arr, n, dato, izquierd, derecha);
+        }
+        else
+        {
+            izquierd = medio + 1;
+            busqBinariaRE(arr, n, dato, izquierd, derecha);
+        }
+    }
+}
+
 // declaramos una funcion que genere numeros aleatorios
 int randoms(int min, int max)
 {
@@ -227,7 +267,7 @@ int main()
     // ahora llamamos a la funcion de ordenamiento merge
     ordenaMerge(arr, 0, n - 1);
 
-    cout << "Array ordenado: ";
+    cout << "Vector ordenado por mergeShort: ";
     for (int i = 0; i < n; i++)
     {
         cout << arr[i] << " ";
@@ -241,7 +281,13 @@ int main()
     busqSecuencial(arr, dato, n);
 
     // ahora llamamos a la funcion de busqueda binaria
-    busqBinaria(arr, n);
+    // y llamamos a la funcion de busqueda binaria recursiva
+    busqBinaria(arr, n,dato);
+
+    int izquierd = 0;
+    int derecha = n - 1;
+    busqBinariaRE(arr, n,dato, izquierd, derecha);
+
 
 
     return 0;

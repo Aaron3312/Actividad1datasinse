@@ -227,3 +227,49 @@ int main() {
 
     return 0;
 }
+
+#include <iostream>
+
+using namespace std;
+
+// Función de búsqueda binaria recursiva
+int busquedaBinariaRecursiva(int arr[], int elemento, int izquierda, int derecha) {
+    if (izquierda <= derecha) {
+        int medio = izquierda + (derecha - izquierda) / 2;
+
+        // Si el elemento buscado es igual al elemento en la posición media, lo hemos encontrado
+        if (arr[medio] == elemento) {
+            return medio;
+        }
+
+        // Si el elemento buscado es menor que el elemento en la posición media,
+        // buscamos en la mitad izquierda del arreglo
+        if (arr[medio] > elemento) {
+            return busquedaBinariaRecursiva(arr, elemento, izquierda, medio - 1);
+        }
+
+        // Si el elemento buscado es mayor que el elemento en la posición media,
+        // buscamos en la mitad derecha del arreglo
+        return busquedaBinariaRecursiva(arr, elemento, medio + 1, derecha);
+    }
+
+    // Si el elemento no se encuentra en el arreglo, retornamos -1
+    return -1;
+}
+
+int main() {
+    int miArreglo[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int elementoBuscado = 5;
+    int n = sizeof(miArreglo) / sizeof(miArreglo[0]);
+
+    int resultado = busquedaBinariaRecursiva(miArreglo, elementoBuscado, 0, n - 1);
+
+    if (resultado != -1) {
+        cout << "El elemento " << elementoBuscado << " se encuentra en la posición " << resultado << endl;
+    } else {
+        cout << "El elemento " << elementoBuscado << " no se encuentra en el arreglo." << endl;
+    }
+
+    return 0;
+}
+
