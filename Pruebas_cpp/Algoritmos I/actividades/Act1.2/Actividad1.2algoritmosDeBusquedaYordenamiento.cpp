@@ -1,7 +1,6 @@
 // Name: Aaron Hernandez Jimenez - A01642529
 // Date: 29/08/2023
 // Description: Act 1.2 - Algoritmos de Búsqueda y Ordenamiento
-//linea prueba
 // instrucciones:
 // Realiza una aplicación en C++ en forma individual,
 // en donde dado n numeros de entrada que son almacenados en un vector<int> realice las siguientes funciones de ordenamiento:
