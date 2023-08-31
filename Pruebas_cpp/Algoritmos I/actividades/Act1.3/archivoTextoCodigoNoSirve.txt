@@ -1,0 +1,14 @@
+   // ordenaMerge(dias, 0, dias.size() - 1, archivo1);
+    // leemos lo que hay en el vector
+   // for (int i = 0; i < dias.size(); i++)
+   // {
+    //    cout << dias[i] << ",";
+   // }
+
+       std::cout << "Datos ordenados guardados en " << filename << std::endl;
+    // leemos lo que hay en el vector
+    for (int i = 0; i < dias.size(); i++)
+    {
+        cout << dias[i] << ", ";
+    }
+    cout << endl << endl << endl;
