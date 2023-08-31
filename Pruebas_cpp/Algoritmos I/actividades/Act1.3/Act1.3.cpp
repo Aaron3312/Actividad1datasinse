@@ -111,6 +111,21 @@ void MergeyGuarda(const std::vector<int>& dias, const string& filename) {
 
 }
 
+//lee las primeras 3 letras del archivo y las guarda en un string
+void OptenerMeses(ifstream& archivo, vector<string>& meses){
+    string linea;
+    string mes;
+    while (getline(archivo, linea))
+    {
+        mes = linea.substr(0, 3);
+        meses.push_back(mes);
+    }
+        for (int i = 0; i < meses.size(); i++)
+    {
+        cout << meses[i] << endl;
+    }
+}
+
 
 int main()
 {
@@ -138,7 +153,11 @@ int main()
         dia = stoi(linea.substr(4, 2));
         dias.push_back(dia);
     }
-    
+
+    // se llama a la funcion que lee los meses y los guarda en un vector de enteros
+    vector<string> meses;
+    OptenerMeses(archivo, meses);
+
 
 
     
