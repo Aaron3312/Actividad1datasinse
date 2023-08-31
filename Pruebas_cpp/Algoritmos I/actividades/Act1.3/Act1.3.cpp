@@ -21,3 +21,44 @@
 using namespace std;
 
 
+int main() {
+    // Abre un archivo para lectura
+    ifstream archivo("bitacora.txt");
+    
+    // Verifica si el archivo se abrió correctamente
+    if (!archivo.is_open()) {
+        cerr << "No se pudo abrir el archivo." << std::endl;
+        return 1;
+    }
+    else
+    {
+        cout << "Archivo abierto correctamente." << endl;
+    }
+    
+    // Crea un archivo de texto
+    ofstream archivo1("nuevaBitacora.txt");
+    
+
+    // Verifica si el archivo se creó correctamente
+    if (!archivo1.is_open()) {
+        cerr << "No se pudo crear el archivo." << endl;
+        return 1;
+    }
+
+    // Escribe contenido en el archivo
+    archivo1 << "Este es un nuevo archivo de texto." << endl;
+    archivo1 << "Puedes escribir más líneas aquí." << endl;
+
+    // Cierra el archivo al finalizar
+    archivo.close();
+    archivo1.close();
+
+    cout << "Archivo creado y contenido escrito exitosamente." << endl;
+
+    return 0;
+}
+
+
+
+
+
