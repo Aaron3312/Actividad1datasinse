@@ -100,7 +100,7 @@ int numeroMes(string mes){
         return 6;
     }
     if (mes == "Jul"){
-        return 6;
+        return 7;
     }
     if (mes == "Aug"){
         return 8;
@@ -118,6 +118,24 @@ int numeroMes(string mes){
         return 12;
     }
     return 0;
+}
+
+int sumaCodigo(string renglon){
+    string nombre;
+    int mes, dia, hora, min, seg, n;
+    nombre = renglon.substr(0,3);
+    mes = numeroMes(nombre);
+    dia = stoi(renglon.substr(4,2));
+    if (dia > 9){
+        n = 1;
+    }
+    else{
+        n = 0;
+    }
+    hora = stoi(renglon.substr(6,3));
+    min = stoi(renglon.substr(9+n,3));
+    seg = stoi(renglon.substr(12+n,3));
+    return mes*100000000 + dia*1000000 + hora*10000 + min*100 + seg;
 }
 
 // Función principal para ordenar el vector y guardar en un archivo de texto
@@ -158,10 +176,6 @@ void MergeyGuarda(const vector<int>& meses, const vector<int>& dias, const strin
 
 }
 
-
-
-
-
 int main()
 {
     // Abre un archivo para lectura
@@ -189,12 +203,14 @@ int main()
     {
         renglones.push_back(linea);
     }
+    renglones[1].append("Mamahuevo");
 
     for (int i = 0; i < 10; i++)
     {
+        renglones[i].insert(0,to_string(sumaCodigo(renglones[i])));
+        renglones[i].insert(9," ");
         cout<<renglones[i]<<endl;
     }
-    
     
     // procedemos a ordenar el vector de enteros con el algoritmo de ordenamiento mergesort
     MergeyGuarda(meses,dias, "nuevaBitacora.txt");
