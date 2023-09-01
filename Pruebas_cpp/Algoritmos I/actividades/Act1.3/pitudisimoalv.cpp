@@ -229,6 +229,9 @@ int main()
         segundo = segundo;
         auxmes = numeroMes(mes);
 
+        
+
+
         todo = auxmes + dia + hora + minuto + segundo;
         
         
