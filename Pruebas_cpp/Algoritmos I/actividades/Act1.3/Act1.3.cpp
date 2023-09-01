@@ -177,16 +177,17 @@ int main()
     string mes;
     vector<int> dias;
     vector<int> meses;
+    vector<string> renglones;
     while (getline(archivo, linea))
     {
-        dia = stoi(linea.substr(6, 3));
-        mes = linea.substr(0,3);
-        dias.push_back(dia);
-        dia = numeroMes(mes);
-        meses.push_back(dia);
+        renglones.push_back(linea);
     }
 
-
+    for (int i = 0; i < 10; i++)
+    {
+        cout<<renglones[i]<<endl;
+    }
+    
     
     // procedemos a ordenar el vector de enteros con el algoritmo de ordenamiento mergesort
     MergeyGuarda(dias, "nuevaBitacora.txt");
