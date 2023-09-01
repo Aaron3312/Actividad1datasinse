@@ -157,7 +157,7 @@ int main()
     // se llama a la funcion que lee los meses y los guarda en un vector de enteros
     vector<string> meses;
     OptenerMeses(archivo, meses);
-
+//
 
 
     
