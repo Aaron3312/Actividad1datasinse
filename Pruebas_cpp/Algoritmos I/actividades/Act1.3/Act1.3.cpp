@@ -93,7 +93,7 @@ int numeroMes(string mes){
     if (mes == "Apr"){
         return 4;
     }
-    if (mes == "May"){
+    if (mes == "May"){ 
         return 5;
     }
     if (mes == "Jun"){
@@ -156,11 +156,11 @@ void MergeyGuarda(const std::vector<int>& dias, const string& filename) {
 
 
 //Funcion para ordenar con Buble
-void bubleSort(std::vector<string>& renglones, int size){
+void bubleSort(std::vector<string> &renglones, int size){
     for (int i=0; i<size; i++)
         for(int j=0; j<size-i; j++){
-            if (stoi(renglones[j].substr(0,11)) > stoi(renglones[j+1].substr(0,9)))
-            swap(renglones[j], renglones[j+1])
+            if (stoi(renglones[j].substr(0,11)) > stoi(renglones[j+1].substr(0,11)))
+            swap(renglones[j], renglones[j+1]);
     }
 }
 
@@ -203,7 +203,8 @@ int main()
     MergeyGuarda(dias, "nuevaBitacora.txt");
     MergeyGuarda(meses, "nuevoMes.txt");
 
-
+    // procedemos a ordenar el vector de strings modificado con el algoritmo de ordenamiento Bublesort
+    bubleSort(renglones, cantRenglones);
 
     cout << "Archivo creado y contenido escrito exitosamente." << endl;
 
