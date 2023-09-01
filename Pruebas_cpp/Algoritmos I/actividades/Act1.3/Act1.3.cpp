@@ -195,7 +195,7 @@ int main()
     // Lee el archivo línea por línea y almacena los datos en un vector de enteros de los dias
     string linea;
     int dia;
-    string mes;
+    string mes, codigo;
     vector<int> dias;
     vector<int> meses;
     vector<string> renglones;
@@ -203,12 +203,12 @@ int main()
     {
         renglones.push_back(linea);
     }
-    renglones[1].append("Mamahuevo");
 
     for (int i = 0; i < 10; i++)
     {
-        renglones[i].insert(0,to_string(sumaCodigo(renglones[i])));
-        renglones[i].insert(9," ");
+        codigo = to_string(sumaCodigo(renglones[i]));
+        codigo.append(" ");
+        renglones[i].insert(0,codigo);
         cout<<renglones[i]<<endl;
     }
     
