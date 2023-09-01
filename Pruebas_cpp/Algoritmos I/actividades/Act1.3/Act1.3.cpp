@@ -76,7 +76,7 @@ void mergeSort(std::vector<int>& dia, int izq, int derecha) {
         mergeSort(dia, izq, medio);
         mergeSort(dia, medio + 1, derecha);
 
-        // Combina las mitades ordenadas
+        // Combina las mitades ordenadasgi
         merge(dia, izq, medio, derecha);
     }
 }
