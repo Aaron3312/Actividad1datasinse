@@ -82,13 +82,57 @@ void mergeSort(std::vector<int>& dia, int izq, int derecha) {
     }
 }
 
+int numeroMes(string mes){
+    if (mes == "Jan"){
+        return 1;
+    }
+    if (mes == "Feb"){
+        return 2;
+    }
+    if (mes == "Mar"){
+        return 3;
+    }
+    if (mes == "Apr"){
+        return 4;
+    }
+    if (mes == "May"){
+        return 5;
+    }
+    if (mes == "Jun"){
+        return 6;
+    }
+    if (mes == "Jul"){
+        return 6;
+    }
+    if (mes == "Aug"){
+        return 8;
+    }
+    if (mes == "Sep"){
+        return 9;
+    }
+    if (mes == "Oct"){
+        return 10;
+    }
+    if (mes == "Nov"){
+        return 11;
+    }
+    if (mes == "Dic"){
+        return 12;
+    }
+    return 0;
+}
+
 // Función principal para ordenar el vector y guardar en un archivo de texto
-void MergeyGuarda(const std::vector<int>& dias, const string& filename) {
+void MergeyGuarda(const vector<int>& meses, const vector<int>& dias, const string& filename) {
     // Hacer una copia del vector de entrada para no modificarlo
-    std::vector<int> dia = dias;
+    vector<int> dia = dias;
+    vector<int> mes = meses;
 
     // Ordenar el vector utilizando MergeSort
     mergeSort(dia, 0, dia.size() - 1);
+    mergeSort(mes, 0, mes.size() - 1);
+    
+
 
     // Crea un archivo de texto
     ofstream nuevaBitacora(filename);
@@ -102,6 +146,9 @@ void MergeyGuarda(const std::vector<int>& dias, const string& filename) {
     {
         cout << "Archivo creado correctamente." << endl;
     }
+    for (const int& num : mes) {
+        nuevaBitacora << num << " ";
+    }
 
     // Escribir los elementos ordenados en el archivo de texto
     for (const int& num : dia) {
@@ -112,6 +159,8 @@ void MergeyGuarda(const std::vector<int>& dias, const string& filename) {
     nuevaBitacora.close();
 
 }
+
+
 
 //lee las primeras 3 letras del archivo y las guarda en un string
 //void OptenerMeses(ifstream& archivo, vector<string>& meses){
@@ -136,15 +185,16 @@ int main()
     // Lee el archivo línea por línea y almacena los datos en un vector de enteros de los dias
     string linea;
     int dia;
-    int n = 0;
+    string mes;
     vector<int> dias;
     vector<int> meses;
     string mes;
     int aux;
+    vector<int> meses;
+    vector<string> renglones;
     while (getline(archivo, linea))
     {
-        dia = stoi(linea.substr(4, 2));
-        dias.push_back(dia);
+        renglones.push_back(linea);
         mes = linea.substr(0, 3);
         if (mes == "Jan"){aux = 1;}
         if (mes == "Feb"){aux = 2;}
@@ -161,12 +211,14 @@ int main()
         meses.push_back(aux);
     }
 
-
-
-
-
+    for (int i = 0; i < 10; i++)
+    {
+        cout<<renglones[i]<<endl;
+    }
+    
+    
     // procedemos a ordenar el vector de enteros con el algoritmo de ordenamiento mergesort
-    MergeyGuarda(dias, "nuevaBitacora.txt");
+    MergeyGuarda(meses,dias, "nuevaBitacora.txt");
 
 
 
