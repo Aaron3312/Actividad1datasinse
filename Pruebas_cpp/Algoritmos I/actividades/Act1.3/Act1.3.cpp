@@ -207,8 +207,8 @@ int main()
 
     for (int i = 0; i < 10; i++)
     {
-        renglones[i].append(" ");
-        renglones[i].append(to_string(sumaCodigo(renglones[i])));
+        renglones[i].insert(0,to_string(sumaCodigo(renglones[i])));
+        renglones[i].insert(9," ");
         cout<<renglones[i]<<endl;
     }
     
