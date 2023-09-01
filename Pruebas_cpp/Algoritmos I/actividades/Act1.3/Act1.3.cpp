@@ -64,8 +64,7 @@ void merge( vector<int>& dia, int izq, int medio, int derecha) {
         k++;
     }
 }
-//dhgdgh
-//fnhch
+
 // Función recursiva para realizar MergeSort
 void mergeSort(std::vector<int>& dia, int izq, int derecha) {
     if (izq < derecha) {
@@ -76,9 +75,49 @@ void mergeSort(std::vector<int>& dia, int izq, int derecha) {
         mergeSort(dia, izq, medio);
         mergeSort(dia, medio + 1, derecha);
 
-        // Combina las mitades ordenadasgi
+        // Combina las mitades ordenadas
         merge(dia, izq, medio, derecha);
     }
+}
+//sed
+int numeroMes(string mes){
+    if (mes == "Jan"){
+        return 1;
+    }
+    if (mes == "Feb"){
+        return 2;
+    }
+    if (mes == "Mar"){
+        return 3;
+    }
+    if (mes == "Apr"){
+        return 4;
+    }
+    if (mes == "May"){
+        return 5;
+    }
+    if (mes == "Jun"){
+        return 6;
+    }
+    if (mes == "Jul"){
+        return 6;
+    }
+    if (mes == "Aug"){
+        return 8;
+    }
+    if (mes == "Sep"){
+        return 9;
+    }
+    if (mes == "Oct"){
+        return 10;
+    }
+    if (mes == "Nov"){
+        return 11;
+    }
+    if (mes == "Dic"){
+        return 12;
+    }
+    return 0;
 }
 
 // Función principal para ordenar el vector y guardar en un archivo de texto
@@ -112,21 +151,7 @@ void MergeyGuarda(const std::vector<int>& dias, const string& filename) {
 
 }
 
-//lee las primeras 3 letras del archivo y las guarda en un string
-void OptenerMeses(ifstream& archivo, vector<string>& meses){
-    string linea;
-    string mes;
-    while (getline(archivo, linea))
-    {
-        mes = linea.substr(0, 3);
-        meses.push_back(mes);
-    }
-        for (int i = 0; i < meses.size(); i++)
-    {
-        cout << meses[i] << endl;
-    }
-    cout << "Ads" << endl;
-}
+
 
 
 
@@ -145,27 +170,27 @@ int main()
     {
         cout << "Archivo abierto correctamente." << endl;
     }
-//
+
     // Lee el archivo línea por línea y almacena los datos en un vector de enteros de los dias
     string linea;
     int dia;
-    int n = 0;
+    string mes;
     vector<int> dias;
+    vector<int> meses;
     while (getline(archivo, linea))
     {
-        dia = stoi(linea.substr(4, 2));
+        dia = stoi(linea.substr(6, 3));
+        mes = linea.substr(0,3);
         dias.push_back(dia);
+        dia = numeroMes(mes);
+        meses.push_back(dia);
     }
-
-    // se llama a la funcion que lee los meses y los guarda en un vector de enteros
-    vector<string> meses;
-    OptenerMeses(archivo, meses);
-//
 
 
     
     // procedemos a ordenar el vector de enteros con el algoritmo de ordenamiento mergesort
     MergeyGuarda(dias, "nuevaBitacora.txt");
+    MergeyGuarda(meses, "nuevoMes.txt");
 
 
 
