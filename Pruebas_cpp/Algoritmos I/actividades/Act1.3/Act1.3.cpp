@@ -129,6 +129,11 @@ void OptenerMeses(ifstream& archivo, vector<string>& meses){
 }
 
 
+//Funcion para ordenar con Buble
+void bubleSort(){
+    
+}
+
 int main()
 {
     // Abre un archivo para lectura
