@@ -143,7 +143,7 @@ int main()
     {
         cout << "Archivo abierto correctamente." << endl;
     }
-
+//
     // Lee el archivo línea por línea y almacena los datos en un vector de enteros de los dias
     string linea;
     int dia;
