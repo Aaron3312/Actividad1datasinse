@@ -64,7 +64,8 @@ void merge( vector<int>& dia, int izq, int medio, int derecha) {
         k++;
     }
 }
-
+//dhgdgh
+//fnhch
 // Función recursiva para realizar MergeSort
 void mergeSort(std::vector<int>& dia, int izq, int derecha) {
     if (izq < derecha) {
