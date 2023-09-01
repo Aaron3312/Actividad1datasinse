@@ -124,6 +124,7 @@ void OptenerMeses(ifstream& archivo, vector<string>& meses){
     {
         cout << meses[i] << endl;
     }
+    cout << "Ads" << endl;
 }
 
 
