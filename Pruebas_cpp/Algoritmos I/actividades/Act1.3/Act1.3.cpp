@@ -79,7 +79,7 @@ void mergeSort(std::vector<int>& dia, int izq, int derecha) {
         merge(dia, izq, medio, derecha);
     }
 }
-//sed
+
 int numeroMes(string mes){
     if (mes == "Jan"){
         return 1;
@@ -121,12 +121,16 @@ int numeroMes(string mes){
 }
 
 // Función principal para ordenar el vector y guardar en un archivo de texto
-void MergeyGuarda(const std::vector<int>& dias, const string& filename) {
+void MergeyGuarda(const vector<int>& meses, const vector<int>& dias, const string& filename) {
     // Hacer una copia del vector de entrada para no modificarlo
-    std::vector<int> dia = dias;
+    vector<int> dia = dias;
+    vector<int> mes = meses;
 
     // Ordenar el vector utilizando MergeSort
     mergeSort(dia, 0, dia.size() - 1);
+    mergeSort(mes, 0, mes.size() - 1);
+    
+
 
     // Crea un archivo de texto
     ofstream nuevaBitacora(filename);
@@ -139,6 +143,9 @@ void MergeyGuarda(const std::vector<int>& dias, const string& filename) {
     else
     {
         cout << "Archivo creado correctamente." << endl;
+    }
+    for (const int& num : mes) {
+        nuevaBitacora << num << " ";
     }
 
     // Escribir los elementos ordenados en el archivo de texto
@@ -189,8 +196,7 @@ int main()
 
     
     // procedemos a ordenar el vector de enteros con el algoritmo de ordenamiento mergesort
-    MergeyGuarda(dias, "nuevaBitacora.txt");
-    MergeyGuarda(meses, "nuevoMes.txt");
+    MergeyGuarda(meses,dias, "nuevaBitacora.txt");
 
 
 
