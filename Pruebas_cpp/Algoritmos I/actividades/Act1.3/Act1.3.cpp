@@ -156,8 +156,12 @@ void MergeyGuarda(const std::vector<int>& dias, const string& filename) {
 
 
 //Funcion para ordenar con Buble
-void bubleSort(){
-    
+void bubleSort(std::vector<string>& renglones, int size){
+    for (int i=0; i<size; i++)
+        for(int j=0; j<size-i; j++){
+            if (stoi(renglones[j].substr(0,11)) > stoi(renglones[j+1].substr(0,9)))
+            swap(renglones[j], renglones[j+1])
+    }
 }
 
 int main()
@@ -182,8 +186,10 @@ int main()
     string mes;
     vector<int> dias;
     vector<int> meses;
+    int cantRenglones = 0;
     while (getline(archivo, linea))
     {
+        cantRenglones++;
         dia = stoi(linea.substr(6, 3));
         mes = linea.substr(0,3);
         dias.push_back(dia);

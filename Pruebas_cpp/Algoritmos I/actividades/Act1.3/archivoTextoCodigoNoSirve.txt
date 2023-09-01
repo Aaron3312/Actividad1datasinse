@@ -2,3 +2,4 @@ para correr el programa
 ./Activ1p3.exe 
 para compilar
 g++ -o .\Activ1p3.exe .\Act1.3.cpp   
+ git merge main
