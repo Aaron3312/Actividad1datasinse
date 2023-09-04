@@ -20,6 +20,59 @@
 
 using namespace std;
 
+//funcion numero a nombre de mes
+string nombreMes(int mes)
+{
+    if (mes == 1)
+    {
+        return "Jan";
+    }
+    if (mes == 2)
+    {
+        return "Feb";
+    }
+    if (mes == 3)
+    {
+        return "Mar";
+    }
+    if (mes == 4)
+    {
+        return "Apr";
+    }
+    if (mes == 5)
+    {
+        return "May";
+    }
+    if (mes == 6)
+    {
+        return "Jun";
+    }
+    if (mes == 7)
+    {
+        return "Jul";
+    }
+    if (mes == 8)
+    {
+        return "Aug";
+    }
+    if (mes == 9)
+    {
+        return "Sep";
+    }
+    if (mes == 10)
+    {
+        return "Oct";
+    }
+    if (mes == 11)
+    {
+        return "Nov";
+    }
+    if (mes == 12)
+    {
+        return "Dic";
+    }
+    return "0";
+}
 
 //Funcion para hacer busqueda binaria en un vector 
 void busqBinaria(int dato)
@@ -173,6 +226,7 @@ void ordenaArchivo(vector<string> renglones){
 
             for (int i = 0; i < sizR; i++)
             {
+                
                 archivo1 << renglones[i] << endl;
             }
 
@@ -187,47 +241,63 @@ void ordenaArchivo(vector<string> renglones){
             archivo.close();
         }
 
-    void busqSecuencial(int fecha1, int fecha2)
+    void busqSecuencial(int fecha1, int fecha2, vector<string> renglones)
 {   
     ifstream archivo3("BitacoraDeNumeros.txt");
     string linea;
     vector<int> renglonesNumero;
+    vector<string> renglones2;
     while (getline(archivo3, linea))
     {
         renglonesNumero.push_back(stoi(linea));
     }
+    
     archivo3.close();
+
+    ifstream archivo4("nuevaBitacora.txt");
+    while (getline(archivo4, linea))
+    {
+        renglones2.push_back(linea);
+    }
+
     int n = renglonesNumero.size();
     cout << "Busqueda secuencial" << endl;
     
     int minimo, maximo;
-    for (int i = 0; i < ; i++)
+    for (int i = 0; i < n ; i++)
     {
-            cout <<i << endl;
-            minimo = renglonesNumero[i];
+        if (renglonesNumero[i] >= (fecha1))
+        {
+            minimo = i;
+            break;
+        }
     }
-    for (int i = n; i > 10; i--)
+    for (int i = n; i >= 0; i--)
     {
-            maximo = renglonesNumero[i];
+        if (renglonesNumero[i] <= (fecha2))
+        {
+            maximo = i;
+            break;
+        }
     }
 
-    for (int i = minimo; i > maximo; i++)
+    for (int i = minimo; i <= maximo; i++)
     {
-    cout << renglonesNumero[i] << endl;
+        cout << renglones2[i] << endl;
     }
 
-
+    archivo3.close();
+    archivo4.close();
 
 }
     void busquedaPorFecha(vector<string> renglones){
-        ifstream archivo3("BitacoraDeNumeros.txt");
     int mes1, dia1, hora1, min1, seg1, mes2, dia2, hora2, min2, seg2, fecha1, fecha2,opcion;
     cout << "Bienvenido al buscador de fechas" << endl;
     cout << "Quieres una fecha pre establecida para pruebas? 1 = si 0 = no" << endl;
     cin >> opcion;
     if (opcion == 1){
-        int numeroClave = 826025612;
-        int numeroClave2 = 1009103224;
+        int numeroClave = 904055638;
+        int numeroClave2 = 1001072246;
         mes1 = (numeroClave / 100000000);
         dia1 = (numeroClave % 100000000) / 1000000;
         hora1 = (numeroClave % 1000000) / 10000;
@@ -238,8 +308,10 @@ void ordenaArchivo(vector<string> renglones){
         hora2 = (numeroClave2 % 1000000) / 10000;
         min2 = (numeroClave2 % 10000) / 100;
         seg2 = numeroClave2 % 100;
-        cout << "La fecha inicial es: " << mes1 << "/" << dia1 << " " << hora1 << ":" << min1 << ":" << seg1 << endl;
-        cout << "La fecha final es: " << mes2 << "/" << dia2 << " " << hora2 << ":" << min2 << ":" << seg2 << endl;
+        string mesunonombre = nombreMes(mes1);
+        string mesdosnombre = nombreMes(mes2);
+        cout << "La fecha inicial es: " << mesunonombre << "/" << dia1 << " " << hora1 << ":" << min1 << ":" << seg1 << endl;
+        cout << "La fecha final es: " << mesdosnombre << "/" << dia2 << " " << hora2 << ":" << min2 << ":" << seg2 << endl;
     }
     else{
     cout << "Ingrese la fecha inicial que quiere buscar" << endl;
@@ -264,13 +336,18 @@ void ordenaArchivo(vector<string> renglones){
     cin >> min2;
     cout << "Segundo: ";
     cin >> seg2;
+    string mesunonombre = nombreMes(mes1);
+    string mesdosnombre = nombreMes(mes2);
+    
+    cout << "La fecha inicial es: " << mesunonombre << "/" << dia1 << " " << hora1 << ":" << min1 << ":" << seg1 << endl;
+    cout << "La fecha final es: " << mesdosnombre << "/" << dia2 << " " << hora2 << ":" << min2 << ":" << seg2 << endl;
     }
     fecha1 = mes1 * 100000000 + dia1 * 1000000 + hora1 * 10000 + min1 * 100 + seg1;
     fecha2 = mes2 * 100000000 + dia2 * 1000000 + hora2 * 10000 + min2 * 100 + seg2;
     // implementamos un metodo de busqueda binaria para encontrar el primer elemento que sea mayor a la fecha inicial
     // y el ultimo elemento que sea menor a la fecha final
     // primero buscamos el primer elemento que sea mayor a la fecha inicial
-    busqSecuencial(fecha1,fecha2);
+    busqSecuencial(fecha1,fecha2,renglones);
     // ahora buscamos el ultimo elemento que sea menor a la fecha final
 
 
@@ -337,6 +414,7 @@ int main()
         busquedaPorFecha(renglones);
     }
 
+    archivo2.close();
 
 
 
