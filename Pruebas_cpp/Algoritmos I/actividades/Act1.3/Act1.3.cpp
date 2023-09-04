@@ -199,7 +199,7 @@ int main()
     vector<int> dias;
     vector<int> meses;
     vector<string> renglones;
-    while (getline(archivo, linea))
+    /*while (getline(archivo, linea))
     {
         renglones.push_back(linea);
     }
@@ -210,10 +210,40 @@ int main()
         renglones[i].insert(0,to_string(sumaCodigo(renglones[i])));
         renglones[i].insert(9," ");
         cout<<renglones[i]<<endl;
+    }*/
+
+    // vamos a probar algo por fuerza bruta, el ordenamiento menos eficiente pero funcional
+
+    while (getline(archivo, linea))
+    {
+        renglones.push_back(linea);
     }
-    
+    int sizR = renglones.size();
+    for (int i = 0; i < sizR ; i++){
+        for (int j = 0; j < sizR - 1 - i; j++){
+            if (sumaCodigo(renglones[j]) > sumaCodigo(renglones[j+1])){
+                renglones[j].swap(renglones[j+1]);
+            }
+        }
+    }
+
+    ofstream archivo1("nuevaBitacora.txt");
+
+    for (int i = 0; i < sizR; i++){
+        archivo1<<renglones[i]<<endl;
+    }
+
+    archivo1.close();
+
+/* for (int i = 0; i < n; i++) { // complejidad de esta linea es = n
+        for (int j = 0; j < n - 1 - i; j++) { // complejidad de esta linea es = n
+            if (arreglo[j] > arreglo[j + 1]) { // complejidad de esta linea es = 1
+                aux = arreglo[j];
+                arreglo[j] = arreglo[j + 1];
+                arreglo[j + 1] = aux;
+            } */
     // procedemos a ordenar el vector de enteros con el algoritmo de ordenamiento mergesort
-    MergeyGuarda(meses,dias, "nuevaBitacora.txt");
+    // MergeyGuarda(meses,dias, "nuevaBitacora.txt");
 
 
 
