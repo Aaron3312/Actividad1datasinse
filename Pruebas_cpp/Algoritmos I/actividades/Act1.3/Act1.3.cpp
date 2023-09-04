@@ -199,21 +199,9 @@ int main()
     vector<int> dias;
     vector<int> meses;
     vector<string> renglones;
-    /*while (getline(archivo, linea))
-    {
-        renglones.push_back(linea);
-    }
-    renglones[1].append("Mamahuevo");
 
-    for (int i = 0; i < 10; i++)
-    {
-        renglones[i].insert(0,to_string(sumaCodigo(renglones[i])));
-        renglones[i].insert(9," ");
-        cout<<renglones[i]<<endl;
-    }*/
 
-    // vamos a probar algo por fuerza bruta, el ordenamiento menos eficiente pero funcional
-
+    //decidimos ordenarlo con bubblesort que si bien no es muy eficiente, funciona y es lo unico que se pide
     while (getline(archivo, linea))
     {
         renglones.push_back(linea);
@@ -235,13 +223,6 @@ int main()
 
     archivo1.close();
 
-/* for (int i = 0; i < n; i++) { // complejidad de esta linea es = n
-        for (int j = 0; j < n - 1 - i; j++) { // complejidad de esta linea es = n
-            if (arreglo[j] > arreglo[j + 1]) { // complejidad de esta linea es = 1
-                aux = arreglo[j];
-                arreglo[j] = arreglo[j + 1];
-                arreglo[j + 1] = aux;
-            } */
     // procedemos a ordenar el vector de enteros con el algoritmo de ordenamiento mergesort
     // MergeyGuarda(meses,dias, "nuevaBitacora.txt");
 
