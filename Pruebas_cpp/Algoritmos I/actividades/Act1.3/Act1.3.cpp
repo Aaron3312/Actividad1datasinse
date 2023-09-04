@@ -192,7 +192,7 @@ int sumaCodigo(string renglon) // funcion para convertir el renglon en un numero
 void ordenaArchivo(vector<string> renglones){
 // decidimos ordenarlo con bubblesort que si bien no es muy eficiente, funciona y es lo unico que se pide
     // Abre un archivo para lectura
-    ifstream archivo("bitacoraCorta.txt");
+    ifstream archivo("bitacora.txt");
     string linea;
 
 
@@ -241,7 +241,7 @@ void ordenaArchivo(vector<string> renglones){
             archivo.close();
         }
 
-    void busqSecuencial(int fecha1, int fecha2, vector<string> renglones)
+    void busqSecuencial(int fecha1, int fecha2, vector<string> renglones, ofstream& archivo5)
 {   
     ifstream archivo3("BitacoraDeNumeros.txt");
     string linea;
@@ -280,14 +280,15 @@ void ordenaArchivo(vector<string> renglones){
             break;
         }
     }
+    archivo3.close();
+    archivo4.close();
 
     for (int i = minimo; i <= maximo; i++)
     {
+        archivo5 << renglones2[i] << endl;
         cout << renglones2[i] << endl;
     }
-
-    archivo3.close();
-    archivo4.close();
+    archivo5.close();
 
 }
     void busquedaPorFecha(vector<string> renglones){
@@ -308,10 +309,7 @@ void ordenaArchivo(vector<string> renglones){
         hora2 = (numeroClave2 % 1000000) / 10000;
         min2 = (numeroClave2 % 10000) / 100;
         seg2 = numeroClave2 % 100;
-        string mesunonombre = nombreMes(mes1);
-        string mesdosnombre = nombreMes(mes2);
-        cout << "La fecha inicial es: " << mesunonombre << "/" << dia1 << " " << hora1 << ":" << min1 << ":" << seg1 << endl;
-        cout << "La fecha final es: " << mesdosnombre << "/" << dia2 << " " << hora2 << ":" << min2 << ":" << seg2 << endl;
+
     }
     else{
     cout << "Ingrese la fecha inicial que quiere buscar" << endl;
@@ -336,18 +334,23 @@ void ordenaArchivo(vector<string> renglones){
     cin >> min2;
     cout << "Segundo: ";
     cin >> seg2;
+
+    }
     string mesunonombre = nombreMes(mes1);
     string mesdosnombre = nombreMes(mes2);
-    
+    ofstream archivo5("BusquedaPorFecha.txt");
     cout << "La fecha inicial es: " << mesunonombre << "/" << dia1 << " " << hora1 << ":" << min1 << ":" << seg1 << endl;
     cout << "La fecha final es: " << mesdosnombre << "/" << dia2 << " " << hora2 << ":" << min2 << ":" << seg2 << endl;
-    }
+    archivo5 << "La fecha inicial es: " << mesunonombre << "/" << dia1 << " " << hora1 << ":" << min1 << ":" << seg1 << endl;
+    archivo5 << "La fecha final es: " << mesdosnombre << "/" << dia2 << " " << hora2 << ":" << min2 << ":" << seg2 << endl;
     fecha1 = mes1 * 100000000 + dia1 * 1000000 + hora1 * 10000 + min1 * 100 + seg1;
     fecha2 = mes2 * 100000000 + dia2 * 1000000 + hora2 * 10000 + min2 * 100 + seg2;
     // implementamos un metodo de busqueda binaria para encontrar el primer elemento que sea mayor a la fecha inicial
     // y el ultimo elemento que sea menor a la fecha final
     // primero buscamos el primer elemento que sea mayor a la fecha inicial
-    busqSecuencial(fecha1,fecha2,renglones);
+    //le pasamos tambein un elemento de texto a la busqueda secuencial para que nos regrese el renglon de texto
+    busqSecuencial(fecha1,fecha2,renglones,archivo5);
+    
     // ahora buscamos el ultimo elemento que sea menor a la fecha final
 
 
