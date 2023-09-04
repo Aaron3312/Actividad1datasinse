@@ -20,77 +20,46 @@
 
 using namespace std;
 
-// Función para combinar dos subvectores ordenados
-void merge(vector<int> &dia, int izq, int medio, int derecha)
-{
-    int n1 = medio - izq + 1;
-    int n2 = derecha - medio;
-    vector<int> izqArr(n1);
-    vector<int> derechArr(n2);
-
-    for (int i = 0; i < n1; i++)
+//Funcion para hacer busqueda binaria en un vector 
+void busqBinaria(int dato)
+{  
+    ifstream archivo3("BitacoraDeNumeros.txt");
+    string linea;
+    vector<int> renglonesNumero;
+    while (getline(archivo3, linea))
     {
-        izqArr[i] = dia[izq + i];
+        renglonesNumero.push_back(stoi(linea));
     }
-    for (int j = 0; j < n2; j++)
+    int n = renglonesNumero.size();
+    cout << "Funcion Busqueda binaria" << endl;
+    //primero el metodo iterativo
+    int inicio = 0;
+    int fin = n-1;
+    int medio;
+    while (inicio <= fin)
     {
-        derechArr[j] = dia[medio + 1 + j];
-    }
-
-    // Fusionar los subvectores temporales de nuevo en dia[izq...derecha]
-    int i = 0;
-    int j = 0;
-    int k = izq;
-
-    while (i < n1 && j < n2)
-    {
-        if (izqArr[i] <= derechArr[j])
+        medio = (inicio + fin) / 2;
+        if (dato == renglonesNumero[medio])
         {
-            dia[k] = izqArr[i];
-            i++;
+            cout << "El numero se encuentra en el indice " << medio << endl;
+            break;
+        }
+        else if (dato < renglonesNumero[medio])
+        {
+            fin = medio - 1;
         }
         else
         {
-            dia[k] = derechArr[j];
-            j++;
+            inicio = medio + 1;
         }
-        k++;
     }
-
-    // Copiar los elementos restantes de izqArr[], si los hay
-    while (i < n1)
+    if (inicio > fin)
     {
-        dia[k] = izqArr[i];
-        i++;
-        k++;
-    }
-
-    // Copiar los elementos restantes de derechArr[], si los hay
-    while (j < n2)
-    {
-        dia[k] = derechArr[j];
-        j++;
-        k++;
+        cout << "-1" << endl;
     }
 }
 
-// Función recursiva para realizar MergeSort
-void mergeSort(std::vector<int> &dia, int izq, int derecha)
-{
-    if (izq < derecha)
-    {
-        // Encuentra el punto medio
-        int medio = izq + (derecha - izq) / 2;
-
-        // Ordena la primera y la segunda mitad
-        mergeSort(dia, izq, medio);
-        mergeSort(dia, medio + 1, derecha);
-
-        // Combina las mitades ordenadas
-        merge(dia, izq, medio, derecha);
-    }
-}
-
+// Función para ordenar un vector utilizando el algoritmo de bubble sort
 int numeroMes(string mes)
 {
     if (mes == "Jan")
@@ -144,7 +113,7 @@ int numeroMes(string mes)
     return 0;
 }
 
-int sumaCodigo(string renglon)
+int sumaCodigo(string renglon) // funcion para convertir el renglon en un numero que represente la fecha
 {
     string nombre;
     int mes, dia, hora, min, seg, n;
@@ -165,49 +134,11 @@ int sumaCodigo(string renglon)
     return mes * 100000000 + dia * 1000000 + hora * 10000 + min * 100 + seg;
 }
 
-// Función principal para ordenar el vector y guardar en un archivo de texto
-void MergeyGuarda(const vector<int> &meses, const vector<int> &dias, const string &filename)
-{
-    // Hacer una copia del vector de entrada para no modificarlo
-    vector<int> dia = dias;
-    vector<int> mes = meses;
-
-    // Ordenar el vector utilizando MergeSort
-    mergeSort(dia, 0, dia.size() - 1);
-    mergeSort(mes, 0, mes.size() - 1);
-
-    // Crea un archivo de texto
-    ofstream nuevaBitacora(filename);
-
-    // Verifica si el archivo se creó correctamente
-    if (!nuevaBitacora.is_open())
-    {
-        cerr << "No se pudo crear el archivo." << endl;
-    }
-    else
-    {
-        cout << "Archivo creado correctamente." << endl;
-    }
-    for (const int &num : mes)
-    {
-        nuevaBitacora << num << " ";
-    }
-
-    // Escribir los elementos ordenados en el archivo de texto
-    for (const int &num : dia)
-    {
-        nuevaBitacora << num << " ";
-    }
-
-    // Cerrar el archivo de texto
-    nuevaBitacora.close();
-}
-
-void ordenaArchivo(){
+// Función para ordenar un vector utilizando el algoritmo de bubble sort
+void ordenaArchivo(vector<string> renglones){
 // decidimos ordenarlo con bubblesort que si bien no es muy eficiente, funciona y es lo unico que se pide
     // Abre un archivo para lectura
     ifstream archivo("bitacoraCorta.txt");
-    vector<string> renglones;
     string linea;
 
 
@@ -219,6 +150,7 @@ void ordenaArchivo(){
     else
     {
         cout << "Archivo abierto correctamente." << endl;
+        cout << "Organizando y ordenando todo lo que tiene que ver con el hecho del algoritmo bubblesort, aprox 2:30 min" << endl;
     }
             while (getline(archivo, linea))
             {
@@ -253,22 +185,25 @@ void ordenaArchivo(){
             // Cierra el archivo al finalizar
             archivo.close();
         }
-    void busquedaPorFecha(){
+    void busquedaPorFecha(vector<string> renglones){
+        ifstream archivo3("BitacoraDeNumeros.txt");
     int mes1, dia1, hora1, min1, seg1, mes2, dia2, hora2, min2, seg2, fecha1, fecha2,opcion;
     cout << "Bienvenido al buscador de fechas" << endl;
     cout << "Quieres una fecha pre establecida para pruebas? 1 = si 0 = no" << endl;
     cin >> opcion;
     if (opcion == 1){
-        mes1 = 10;
-        dia1 = 1;
-        hora1 = 1;
-        min1 = 1;
-        seg1 = 1;
-        mes2 = 12;
+        int numeroClave = 826025612;
+        mes1 = (numeroClave / 100000000);
+        dia1 = (numeroClave % 100000000) / 1000000;
+        hora1 = (numeroClave % 1000000) / 10000;
+        min1 = (numeroClave % 10000) / 100;
+        seg1 = numeroClave % 100;
+        mes2 = 9;
         dia2 = 1;
-        hora2 = 1;
-        min2 = 1;
-        seg2 = 1;
+        hora2 = 0;
+        min2 = 0;
+        seg2 = 0;
+        cout << "La fecha inicial es: " << mes1 << "/" << dia1 << " " << hora1 << ":" << min1 << ":" << seg1 << endl;
     }
     else{
     cout << "Ingrese la fecha inicial que quiere buscar" << endl;
@@ -299,15 +234,30 @@ void ordenaArchivo(){
     // implementamos un metodo de busqueda binaria para encontrar el primer elemento que sea mayor a la fecha inicial
     // y el ultimo elemento que sea menor a la fecha final
     // primero buscamos el primer elemento que sea mayor a la fecha inicial
-    
+    busqBinaria(fecha1);
+    // ahora buscamos el ultimo elemento que sea menor a la fecha final
+    busqBinaria(fecha2);
 
 }
-        
+
+    void obtenerRengloNumYRenglo(vector<string> renglones){
+        string linea;
+        ifstream archivo2("nuevaBitacora.txt");
+        ofstream archivo3("BitacoraDeNumeros.txt");
+        renglones.clear();
+        while (getline(archivo2, linea))
+        {
+            renglones.push_back(linea);
+            archivo3 << sumaCodigo(linea) << endl;
+        }
+        archivo2.close();
+        archivo3.close();
+    }
 
 int main()
 {
 
-
+    
     // Lee el archivo línea por línea y almacena los datos en un vector de enteros de los dias
     int dia;
     string mes;
@@ -315,8 +265,9 @@ int main()
     vector<int> meses;
     vector<int> renglonesNumero;
     string linea;
-   
+    vector<string> renglones;
 
+   
     ifstream archivo2("nuevaBitacora.txt");
 
     if (archivo2.is_open())
@@ -331,20 +282,28 @@ int main()
         if (renglonesNumero[0] < renglonesNumero[1] && renglonesNumero[1] < renglonesNumero[2] && renglonesNumero[2] < renglonesNumero[3])
         {
             cout << "El archivo ya esta ordenado" << endl;
+            obtenerRengloNumYRenglo(renglones);
+            busquedaPorFecha(renglones);
+
         }
         else {
             cout << "El archivo no esta ordenado" << endl;
-            ordenaArchivo();
-
+            ordenaArchivo(renglones);
+            obtenerRengloNumYRenglo(renglones);
+            busquedaPorFecha(renglones);
+            
         }
     }
     else {
         cout << "El archivo no existe" << endl;
-        ordenaArchivo();
+        ordenaArchivo(renglones);
+        obtenerRengloNumYRenglo(renglones);
+        busquedaPorFecha(renglones);
     }
-    // ahora vamos a utilizar un algoritmo de busqueda para poder investigar un periodo entre 2 fechas que se van a preguntar al usuario
-    // primero vamos a preguntarle al usuario las fechas que quiere buscar
-    BusquedaPorFecha();
+
+
+
+
 
     
             
