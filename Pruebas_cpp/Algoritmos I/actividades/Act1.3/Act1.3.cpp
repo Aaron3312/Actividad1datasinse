@@ -272,9 +272,9 @@ void ordenaArchivo(vector<string> renglones){
             break;
         }
     }
-    for (int i = n; i >= 0; i--)
+    for (int i = 0; i < n; i++)
     {
-        if (renglonesNumero[i] <= (fecha2))
+        if (renglonesNumero[i] >= (fecha2))
         {
             maximo = i;
             break;
@@ -282,11 +282,11 @@ void ordenaArchivo(vector<string> renglones){
     }
     archivo3.close();
     archivo4.close();
-
+    cout << "El numero minimo es: " << minimo << endl;
+    cout << "El numero maximo es: " << maximo << endl;
     for (int i = minimo; i <= maximo; i++)
     {
         archivo5 << renglones2[i] << endl;
-        cout << renglones2[i] << endl;
     }
     archivo5.close();
 
@@ -345,6 +345,8 @@ void ordenaArchivo(vector<string> renglones){
     archivo5 << "La fecha final es: " << mesdosnombre << "/" << dia2 << " " << hora2 << ":" << min2 << ":" << seg2 << endl;
     fecha1 = mes1 * 100000000 + dia1 * 1000000 + hora1 * 10000 + min1 * 100 + seg1;
     fecha2 = mes2 * 100000000 + dia2 * 1000000 + hora2 * 10000 + min2 * 100 + seg2;
+    cout << "La fecha inicial en numero es: " << fecha1 << endl;
+    cout << "La fecha final en numero es: " << fecha2 << endl;
     // implementamos un metodo de busqueda binaria para encontrar el primer elemento que sea mayor a la fecha inicial
     // y el ultimo elemento que sea menor a la fecha final
     // primero buscamos el primer elemento que sea mayor a la fecha inicial
