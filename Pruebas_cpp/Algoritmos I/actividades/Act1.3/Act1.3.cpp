@@ -206,7 +206,7 @@ void MergeyGuarda(const vector<int> &meses, const vector<int> &dias, const strin
 void ordenaArchivo(){
 // decidimos ordenarlo con bubblesort que si bien no es muy eficiente, funciona y es lo unico que se pide
     // Abre un archivo para lectura
-    ifstream archivo("bitacora.txt");
+    ifstream archivo("bitacoraCorta.txt");
     vector<string> renglones;
     string linea;
 
@@ -253,6 +253,55 @@ void ordenaArchivo(){
             // Cierra el archivo al finalizar
             archivo.close();
         }
+    void busquedaPorFecha(){
+    int mes1, dia1, hora1, min1, seg1, mes2, dia2, hora2, min2, seg2, fecha1, fecha2,opcion;
+    cout << "Bienvenido al buscador de fechas" << endl;
+    cout << "Quieres una fecha pre establecida para pruebas? 1 = si 0 = no" << endl;
+    cin >> opcion;
+    if (opcion == 1){
+        mes1 = 10;
+        dia1 = 1;
+        hora1 = 1;
+        min1 = 1;
+        seg1 = 1;
+        mes2 = 12;
+        dia2 = 1;
+        hora2 = 1;
+        min2 = 1;
+        seg2 = 1;
+    }
+    else{
+    cout << "Ingrese la fecha inicial que quiere buscar" << endl;
+    cout << "Mes: ";
+    cin >> mes1;
+    cout << "Dia: ";
+    cin >> dia1;
+    cout << "Hora: ";
+    cin >> hora1;
+    cout << "Minuto: ";
+    cin >> min1;
+    cout << "Segundo: ";
+    cin >> seg1;
+    cout << "Ingrese la fecha final que quiere buscar" << endl;
+    cout << "Mes: ";
+    cin >> mes2;
+    cout << "Dia: ";
+    cin >> dia2;
+    cout << "Hora: ";
+    cin >> hora2;
+    cout << "Minuto: ";
+    cin >> min2;
+    cout << "Segundo: ";
+    cin >> seg2;
+    }
+    fecha1 = mes1 * 100000000 + dia1 * 1000000 + hora1 * 10000 + min1 * 100 + seg1;
+    fecha2 = mes2 * 100000000 + dia2 * 1000000 + hora2 * 10000 + min2 * 100 + seg2;
+    // implementamos un metodo de busqueda binaria para encontrar el primer elemento que sea mayor a la fecha inicial
+    // y el ultimo elemento que sea menor a la fecha final
+    // primero buscamos el primer elemento que sea mayor a la fecha inicial
+    
+
+}
         
 
 int main()
@@ -293,7 +342,11 @@ int main()
         cout << "El archivo no existe" << endl;
         ordenaArchivo();
     }
+    // ahora vamos a utilizar un algoritmo de busqueda para poder investigar un periodo entre 2 fechas que se van a preguntar al usuario
+    // primero vamos a preguntarle al usuario las fechas que quiere buscar
+    BusquedaPorFecha();
 
+    
             
     
         return 0;
