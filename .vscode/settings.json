@@ -4,7 +4,10 @@
     "vector": "cpp",
     "algorithm": "cpp",
     "string": "cpp",
-    "archivotextocodigonosirve": "cpp"
+    "archivotextocodigonosirve": "cpp",
+    "xutility": "cpp",
+    "ostream": "cpp",
+    "iosfwd": "cpp"
   },
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "gcc",
