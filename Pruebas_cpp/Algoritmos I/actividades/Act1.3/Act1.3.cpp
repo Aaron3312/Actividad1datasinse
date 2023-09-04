@@ -179,7 +179,7 @@ void MergeyGuarda(const vector<int>& meses, const vector<int>& dias, const strin
 int main()
 {
     // Abre un archivo para lectura
-    ifstream archivo("bitacora.txt");
+    ifstream archivo("bitacoraCorta.txt");
 
     // Verifica si el archivo se abrió correctamente
     if (!archivo.is_open())
@@ -215,7 +215,7 @@ int main()
         }
     }
 
-    ofstream archivo1("nuevaBitacora.txt");
+    ofstream archivo1("nuevaBitacora1.txt");
 
     for (int i = 0; i < sizR; i++){
         archivo1<<renglones[i]<<endl;
