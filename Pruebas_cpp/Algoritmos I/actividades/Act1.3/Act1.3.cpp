@@ -128,18 +128,6 @@ int numeroMes(string mes)
     {
         return 3;
     }
-    if (mes == "Apr")
-    {
-        return 4;
-    }
-    if (mes == "May")
-    {
-        return 5;
-    }
-    if (mes == "Jun")
-    {
-        return 6;
-    }
     if (mes == "Jul")
     {
         return 7;
