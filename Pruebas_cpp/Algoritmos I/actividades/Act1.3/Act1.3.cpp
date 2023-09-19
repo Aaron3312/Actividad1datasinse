@@ -277,8 +277,11 @@ void ordenaArchivo(vector<string> renglones){
         archivo5 << renglones2[i] << endl;
     }
     archivo5.close();
-
 }
+
+
+
+
     void busquedaPorFecha(vector<string> renglones){
     int mes1, dia1, hora1, min1, seg1, mes2, dia2, hora2, min2, seg2, fecha1, fecha2,opcion;
     cout << "Bienvenido al buscador de fechas" << endl;
@@ -340,6 +343,7 @@ void ordenaArchivo(vector<string> renglones){
     // primero buscamos el primer elemento que sea mayor a la fecha inicial
     //le pasamos tambein un elemento de texto a la busqueda secuencial para que nos regrese el renglon de texto
     busqSecuencial(fecha1,fecha2,renglones,archivo5);
+
     
     // ahora buscamos el ultimo elemento que sea menor a la fecha final
 
