@@ -12,20 +12,20 @@
 
 using namespace std;
 
-struct Node //se crea la estructura tipo NODO
+struct Nodo 
 {
-    int id; //numero que tendra cada nodo
-    int priority; //prioridad cada nodo
+    int id; 
+    int priority; 
 };
 
 class PriorQueue{ //se declaran las variables y funciones de la clase Lista doblemente ligada
 private:
-    Node *PQ;
+    Nodo *PQ;
     int N, NumNodes, valor, prior, coord;
 public:
     PriorQueue(int size){
         N=size;
-        PQ = new Node[size];
+        PQ = new Nodo[size];
         NumNodes = -1;
     }
     ~PriorQueue(){
@@ -33,8 +33,8 @@ public:
     }
 
     void Enqueue(int, int);
-    Node *Dequeue();
-    Node *Dequeue(int);
+    Nodo *Dequeue();
+    Nodo *Dequeue(int);
     int Peek();
     void Display(int);
     void Display();
@@ -88,12 +88,12 @@ int PriorQueue::Peek(){
     return coord;
 }
 
-Node *PriorQueue::Dequeue(){
+Nodo *PriorQueue::Dequeue(){
     if (NumNodes == -1){//Si la cantidad de nodos es 0 cola vacia
         cout<<"Cola vacia"<<endl;
         return NULL;
     }
-    Node *Aux;
+    Nodo *Aux;
     valor = PQ[0].id; //se guardan los valores dep primer nodo
     prior = PQ[0].priority;
     for (int i = 0; i <= NumNodes; i++){ //Se repiten los pasos de la funcoon anterior para obtener los datos buscados
@@ -119,12 +119,12 @@ Node *PriorQueue::Dequeue(){
     cout<<"Valor eliminado: "<< Aux->id<<" ("<<Aux->priority<<")"<<endl;
     return Aux;
 }
-Node *PriorQueue::Dequeue(int indx){
+Nodo *PriorQueue::Dequeue(int indx){
     if (NumNodes == -1){//Si la cantidad de nodos es 0 cola vacia
         cout<<"Cola vacia"<<endl;
         return NULL;
     }
-    Node *Aux = &PQ[NumNodes];//Se guarda la direccion del ultimo nodo disponible
+    Nodo *Aux = &PQ[NumNodes];//Se guarda la direccion del ultimo nodo disponible
     valor = PQ[indx].id; //Se guardan los datos del nodo obtenido
     prior = PQ[indx].priority;
     if (indx =! NumNodes){//Si el nodo obtenido no es el ultimo
@@ -153,7 +153,7 @@ void PriorQueue::Update(int indx, int v, int p){
 
 int main(){
     PriorQueue P(5);
-    Node *Ejem;
+    Nodo *Ejem;
 
     P.Enqueue(3,1);
     P.Enqueue(4,2);
