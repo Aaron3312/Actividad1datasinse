@@ -3,8 +3,12 @@
 // Act 2.1 - Implementación de un ADT de estructura de datos lineales (lista doblemente-ligada)
 
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
 
 using namespace std;
+
 void Add(int);
 
 struct Node

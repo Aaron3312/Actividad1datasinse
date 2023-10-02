@@ -13,6 +13,10 @@
 // Realizar una investigación y reflexión en forma individual de la importancia y eficiencia del uso de los diferentes
 //  algoritmos de ordenamiento y búsqueda en una situación problema de esta naturaleza, generando un documento llamado "ReflexAct1.3.pdf"
 
+// recuerdame como compilar y correr esto
+// g++ Act1.3.cpp -o Act1.3
+// ./Act1.3
+
 #include <iostream>
 #include <fstream>
 #include <string>
