@@ -113,7 +113,6 @@ long long int StringToLongInt(string input){
     long long int octeto3 = ip_parts[2];
     long long int octeto4 = ip_parts[3];
     long long int NumIP = (100000000*octeto1)+(1000000*octeto2)+(1000*octeto3)+octeto4;
-    cout <<"\n"<< NumIP << endl;
     return NumIP;
 
 }
@@ -145,25 +144,9 @@ int main(){
             //cout << "IP encontrada: " << match[0] << endl;
             string ip_str = match[0];
             
-            vector<int> ip_parts;
-            stringstream ss(ip_str);
-            string ip_part;
-            while (getline(ss, ip_part, '.')) {
-                ip_parts.push_back(std::stoi(ip_part));
-            }
-            //como ponia un numero largo? 
-
-            long long int octeto1 = ip_parts[0];
-            long long int octeto2 = ip_parts[1];
-            long long int octeto3 = ip_parts[2];
-            long long int octeto4 = ip_parts[3];
-            
-            //cout << octeto1 << "." << octeto2 << "." << octeto3 << "." << octeto4 << endl;
-            long long int NumIP = (100000000*octeto1)+(1000000*octeto2)+(1000*octeto3)+octeto4;
-            //cout << NumIP << endl; 
+            long long int NumIP = StringToLongInt(ip_str);
             Lista.create(linea, NumIP);
             texto = match.suffix();
-
         }
     }
     bitacora.close();
@@ -175,17 +158,10 @@ int main(){
     //cin >> input;
     long long int Inicio = StringToLongInt(input);
 
-    input = "898.7.504.9";
+    input = "506.23.982.55";
     cout << "Ingrese una direccion IP en el formato xxx.xxx.xxx.xxx: ";
     //cin >> input;
     long long int Final = StringToLongInt(input);
-
-
-
-
-    //el formato en el que el usuario va ingresar esto es en el formato de la ip 000.00.000.00 
-    //por lo que se debe de convertir a un numero entero para poder compararlos
-
 
     Lista.read(Inicio,Final);
 
