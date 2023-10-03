@@ -1,0 +1,19 @@
+    cout<<"ingresa la ip inicial: ";
+    cin >> ipInicial[0];
+    cout<<"ingresa la ip final: ";
+    cin >> ipInicial[1];
+    vector<int> ip_parts1;
+    stringstream ss1(ipInicial[0]);
+    string ip_part1;
+    while (getline(ss1, ip_part1, '.')) {
+        ip_parts1.push_back(std::stoi(ip_part1));
+    }
+    cout << ip_parts1[0] << "." << ip_parts1[1] << "." << ip_parts1[2] << "." << ip_parts1[3] << endl;
+    long long int octeto1 = ip_parts1[0];
+    long long int octeto2 = ip_parts1[1];
+    long long int octeto3 = ip_parts1[2];
+    long long int octeto4 = ip_parts1[3];
+    
+    //cout << octeto1 << "." << octeto2 << "." << octeto3 << "." << octeto4 << endl;
+    long long int NumIPs = (100000000*octeto1)+(1000000*octeto2)+(1000*octeto3)+octeto4;
+    cout << NumIPs << endl;
