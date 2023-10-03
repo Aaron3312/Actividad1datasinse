@@ -2,6 +2,7 @@
 #include <iostream>
 #include <conio.h>
 #include <stdlib.h>
+#include <fstream>
 using namespace std;
 
 struct Nodo{
@@ -15,6 +16,12 @@ bool cola_vacia(Nodo *);
 void suprimirCola(Nodo *&, Nodo *&, int &);
 
 int main(){
+
+    //abrimos el archivo bitacoraCorta.txt
+    ifstream bitacoraCorta;
+
+
+
     Nodo *frente = NULL;
     Nodo *fin = NULL;
 
