@@ -1,37 +1,39 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <regex>
 #include <vector>
+#include <sstream>
+
 
 using namespace std;
 
-
 struct Node //se crea la estructura tipo NODO
 {
-    int id; //numero que tendra cada nodo
+    long long int id; //numero que tendra cada nodo
+    string texto;
     Node *ant; //punterio al nodo anterior
     Node *sig; //puntero al nodo siguiente
 };
 
 class ListaDoble{ //se declaran las variables de la clase Lista doblemente ligada
 private:
-Node *I,*F,*T,*N;
+Node *I,*F,*T,*N; //I es el nodo inicial, F es el nodo final, T es el nodo temporal y N es el nodo auxiliar
 
 public:
-    ListaDoble(): I(NULL){}
-    void create(int);
-    Node* read(int);
-    void update(int, int);
-    void del(int);
-    void presentar_I();
-    void presentar_F();
+    ListaDoble(): I(NULL){} //se inicializa el nodo inicial en NULL
+    void create(string,long long int); //se declaran las funciones de la clase
+    void read(long long int,long long int); //se declaran las funciones de la clase
+    void presentar_I(); //presentar de inicio a final
+    void presentar_F(); //presentar de final a inicio
 };
 
-void ListaDoble::create(int x){
+void ListaDoble::create(string txt,long long int x){
     T=new Node(); //Se declara T apuntando al nuevo nodo, dandole el valor que se quiere crear
-    T->id=x;
+    T->id=x; //se le asigna el valor al nodo de id que es equivalente al numero de la ip en la bitacora
+    T->texto=txt; //se le asigna el valor al nodo de texto que es equivalente al renglon de la linea en la bitacora
     T->sig=NULL; //apunta a NULL porque aun no se coloca
-    T->ant=NULL;
+    T->ant=NULL; //apunta a NULL porque aun no se coloca (unicamente para verificar que no apunte a otra cosa!)
 
     if(I==NULL){ //Si en el nodo inicial no hay nada
         I=T; //Los apuntadores inicial y final apuntan al nuevo nodo
@@ -57,45 +59,36 @@ void ListaDoble::create(int x){
     }
 }
 
-Node* ListaDoble::read(int x){
+void ListaDoble::read(long long int x,long long int y){
+    ofstream archivo8("busquedaEnBitacora.txt");
     T=I; //El nodo es igual al primero
-
+    cout<<"BUSQUEDA:"<<endl;
     if(I==NULL){ //si el primer nodo esta vacio
         cout<<"Lista vacia"<<endl;
     }
-    while (T != NULL && T->id != x){ //Avanza de uno en uno hasta encontrar un valor igual o null al buscado
+    while (T != NULL && T->id < x){ //Avanza de uno en uno hasta encontrar un valor igual o null al buscado
         T = T->sig;
     }
-    
     if(T == NULL){ //si el valor encontrado termino siendo null
         cout<<"Dato no encontrado"<<endl;
-    }
-    return T;
-}
-
-void ListaDoble::del(int busq){
-    T=read(busq); //Se busca el nodo a encontrar
-
-    if (T == NULL){ //Si no se encontro el nodo
-        cout<<"No se pudo completar la operacion"<<endl;
         return;
     }
-    N = T->ant; //Reajusta las conexiones para que la lista siga funcionando
-    N->sig = T->sig;
-    N = T->sig;
-    N->ant = T->ant;
-    delete T; //Se borra el nodo
-}
-
-void ListaDoble::update(int x, int mod){ 
-    del(x); //Como se quiere hacer una lista ordenada es mas sencillo borrar el nodo y volverlo a poner
-    create(mod);
+    else{
+        while (T != NULL && T->id <= y)
+        {
+            cout<<T->texto<<endl;
+            T = T->sig;
+            archivo8 << T->texto << endl;
+        }
+    }
 }
 
 void ListaDoble::presentar_I(){
+    ofstream archivo4("nuevaBitacora.txt");
     T=I;
     while (T!=NULL){ //Mientras el nodo no sea null se reproduciran todos los nodos de la lista desde el inicio
-        cout<<"Valor: "<<T->id<<endl;
+        cout<<"Valor: "<<T->texto<<endl;
+        archivo4 << T->texto << endl;
         T=T->sig;
     }
 }
@@ -103,66 +96,73 @@ void ListaDoble::presentar_I(){
 void ListaDoble::presentar_F(){
     T=F;
     while (T!=NULL){ //Mientras el nodo no sea null se reproduciran todos los nodos de la lista desde el final
-        cout<<"Valor: "<<T->id<<endl;
+        cout<<"Valor: "<<T->texto<<endl;
         T=T->ant;
     }
 }
 
-void obtenerIpDeBitacora(vector<string> &ip, string nombreArchivo){
-    string linea;
-    string ipTemporal;
-    ifstream archivo(nombreArchivo);
-
-    struct ipTemporals
-    {
-        string ip;
-        int cantidad;
-    };
-    
-
-    if (archivo.is_open()){
-        while (getline(archivo, linea)){
-            //la ip es el Sep 6 02:02:51 767.40.790.72:6336 Failed password for root the ip in this is 767.40.790.72 
-            ipTemporal = linea.substr(15, 17);
-            ip.push_back(ipTemporal);
-        }
-        archivo.close();
+long long int StringToLongInt(string input){
+    stringstream sd(input);
+    string segment;
+    vector<int> ip_parts;
+    while (getline(sd, segment, '.')) {
+        ip_parts.push_back(stoi(segment));
     }
-    else{
-        cout << "No se pudo abrir el archivo" << endl;
-    }
+    long long int octeto1 = ip_parts[0];
+    long long int octeto2 = ip_parts[1];
+    long long int octeto3 = ip_parts[2];
+    long long int octeto4 = ip_parts[3];
+    long long int NumIP = (100000000*octeto1)+(1000000*octeto2)+(1000*octeto3)+octeto4;
+    return NumIP;
+
 }
 
 
 int main(){
-    
-    string nombreArchivo = "bitacoraCorta.txt";
-    vector<string> ip;
-    obtenerIpDeBitacora(ip, nombreArchivo);
-    for (int i = 0; i < 20; i++){
-        cout << ip[i] << endl;
-    }
-
-    /*
+    vector<string> ipInicial;
+    string ipFinal;
+    //abrimos el archivo bitacoraCorta.txt
     ListaDoble Lista;
     Node *A;
-    for (int i = 1; i < 10; i++){
-        Lista.create(i*10);
+    ifstream bitacora("bitacora.txt");
+
+    if (!bitacora.is_open()){
+        cout<<"No se pudo abrir el archivo"<< endl;
+        return 1;
     }
-    Lista.create(1);
-    Lista.create(100);
-    Lista.create(55);
+
+    std::string texto;
+    std::regex ipRegex("\\b(?:[0-9]{1,3}\\.){3}[0-9]{1,3}\\b");
+    string linea;
+
+    
+    while (getline(bitacora, texto)){ //se lee linea por linea el archivo
+        smatch match;
+        linea = texto;
+
+        while (regex_search(texto, match, ipRegex)){ //se busca la ip en la linea
+            //cout << "IP encontrada: " << match[0] << endl;
+            string ip_str = match[0];
+            
+            long long int NumIP = StringToLongInt(ip_str);
+            Lista.create(linea, NumIP);
+            texto = match.suffix();
+        }
+    }
+    bitacora.close();
     cout<<"Presentar por el Inicio"<<endl;
     Lista.presentar_I();
-    cout<<"Presentar por el Final"<<endl;
-    Lista.presentar_F();
-    A = Lista.read(50);
-    cout<<A->id<<endl;
-    Lista.del(50);
-    cout<<"Presentar Lista con el dato 50 eliminado"<<endl;
-    Lista.presentar_F();
-    Lista.update(30,35);
-    cout<<"Presentar Lista con el valor 30 cambiado a 30"<<endl;
-    Lista.presentar_F(); */
+    string input;
+    cout << "Ingrese una direccion IP en el formato xxx.xxx.xxx.xxx: ";
+    cin >> input;
+    long long int Inicio = StringToLongInt(input);
+
+    cout << "Ingrese una direccion IP en el formato xxx.xxx.xxx.xxx: ";
+    cin >> input;
+    long long int Final = StringToLongInt(input);
+
+    Lista.read(Inicio,Final);
+
     return 0;
 }
+
