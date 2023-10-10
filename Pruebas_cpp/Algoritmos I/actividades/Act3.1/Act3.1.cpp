@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+
 using namespace std;
 
 struct Node{
@@ -7,10 +8,11 @@ struct Node{
     Node* left;
     Node* right;
 
-    Node(int val) : data(val), left(nullptr), right(nullptr) {}
+    Node(int val) : data(val), left(NULL), right(NULL) {}
 };
 class BST{
     private:
+        vector<int> vect;
         Node* Root;
         void insert (int&, Node*&);
         void preOrder (Node*);
@@ -18,9 +20,14 @@ class BST{
         void postOrder(Node*);
         void levelByLevel(Node*);
         int height(Node*);
-        void ancestors(Node*, int);
+        void ancestors(Node*, int, vector<int>);
         int whatlevelamI(Node*, int, int);
+        void DeleteAll(Node*) ;
     public:
+        BST() : Root(NULL) {}
+        ~BST() {
+            DeleteAll(Root);
+        }
         void insert(int &value) { insert(value, Root); }
         void visit(int num);
         void preOrder() { preOrder(Root); }
@@ -28,8 +35,9 @@ class BST{
         void postOrder() { postOrder(Root); }
         void levelByLevel() { levelByLevel(Root); }
         int height() { return height(Root); }
-        void ancestors(int value) { ancestors(Root, value); }
+        void ancestors(int value) { ancestors(Root, value, vect); }
         int whatlevelamI(int value) { return whatlevelamI(Root, value, 0); }
+        void DeleteAll() { DeleteAll(Root); }
 };
 
 //Funcion Insert
@@ -114,22 +122,29 @@ int BST::height(Node* currentNode){
 }
 
 //Funcion Ancestors
-void BST::ancestors(Node* currentNode, int value){
+void BST::ancestors(Node* currentNode, int value, vector<int> vect){
     if (currentNode == NULL)
-        cout << "El arbol esta vacio" << endl;
+        cout << " " << endl;
     else{
         if (value < currentNode->data){
-            cout << currentNode->data << " ";
-            ancestors(currentNode->left, value);
+            ancestors(currentNode->left, value, vect);
         }
         else if (value > currentNode->data){
-            cout << currentNode->data << " ";
-            ancestors(currentNode->right, value);
+            ancestors(currentNode->right, value, vect);
+        }
+        else{
+            if (vect.size() != 0){
+                for (int i = 0; i < vect.size(); i++){
+                    cout << vect[i] << " ";
+                }
+            }
+            else 
+                cout << "El valor no tiene ancestros" << endl;
         }
     }
 }
 
-//Funcion whatlevelamI, si el valor no existe regresa -1
+//Funcion whatlevelamI
 int BST::whatlevelamI(Node* currentNode, int value, int level){
     if (currentNode == NULL)
         return -1;
@@ -142,19 +157,82 @@ int BST::whatlevelamI(Node* currentNode, int value, int level){
             return whatlevelamI(currentNode->right, value, level + 1);
     }
 }
-int main(){
-    BST A;
-    vector <int> v = {5, 3, 2, 4, 7, 6, 7};
-    for (int i : v){
-        A.insert(i);
+
+//Funcion DeleteAll
+void BST::DeleteAll(Node* currentNode){
+    if (currentNode != NULL){
+        DeleteAll(currentNode->left);
+        DeleteAll(currentNode->right);
+        delete currentNode;
     }
-    A.visit(1);
-    A.visit(2);
-    A.visit(3);
-    A.visit(4);
-    cout << "\nAltura del arbol: " << A.height() << endl;
-    cout << "Ancestros del valor 6: ";
-    A.ancestors(6);
-    cout << "\nNivel del valor 6: " << A.whatlevelamI(6) << endl;
+}
+
+int main(){
+    //Pruebas
+    //---------------Primer caso-------------------//
+    //Un arbol con 7 nodos (1 repetido y un valor que no existe) 
+    cout<<"Primer caso"<<endl;
+    BST A1;
+    vector <int> v1 = {5, 3, 2, 4, 7, 6, 7};
+    for (int i : v1){
+        A1.insert(i);
+    }
+    A1.visit(1);
+    A1.visit(2);
+    A1.visit(3);
+    A1.visit(4);
+    cout << "\nAltura del arbol: " << A1.height() << endl;
+    cout << "Ancestros del valor 8: ";
+    A1.ancestors(8);
+    cout << "\nNivel del valor 6: " << A1.whatlevelamI(6) << endl;
+    
+    //---------------Segundo caso-------------------//
+    //Un arbol con 7 nodos (ninguno repetido y todos los valores existen) 
+    cout<<"\nSegundo caso"<<endl;
+    BST A2;
+    vector <int> v2 = {5, 3, 2, 4, 7, 6, 8};
+    for (int i : v2){
+        A2.insert(i);
+    }
+    A2.visit(1);
+    A1.visit(2);
+    A1.visit(3);
+    A1.visit(4);
+    cout << "\nAltura del arbol: " << A2.height() << endl;
+    cout << "Ancestros del valor 4: ";
+    A2.ancestors(4);
+    cout << "\nNivel del valor 4: " << A2.whatlevelamI(8) << endl;
+
+    //---------------Tercer caso-------------------//
+    //Un arbol con 1 solo nodo
+    cout<<"\nTercer caso"<<endl;
+    BST A3;
+    vector <int> v3 = {9};
+    A3.insert(v3[0]);
+    A3.visit(1);
+    A1.visit(2);
+    A1.visit(3);
+    A1.visit(4);
+    cout << "\nAltura del arbol: " << A3.height() << endl;
+    cout << "Ancestros del valor 9: ";
+    A3.ancestors(9);
+    cout << "\nNivel del valor 9: " << A3.whatlevelamI(9) << endl;
+
+    //---------------Cuarto caso-------------------//
+    //Un arbol ya ordenado 
+    cout<<"\nCuarto caso"<<endl;
+    BST A4;
+    vector <int> v4 = {1, 2, 3, 4, 5, 6, 7};
+    for (int i : v4){
+        A4.insert(i);
+    }
+    A4.visit(1);
+    A4.visit(2);
+    A4.visit(3);
+    cout << "\nAltura del arbol: " << A4.height() << endl;
+    cout << "Ancestros del valor 5: ";
+    A4.ancestors(5);
+    cout << "\nNivel del valor 7: " << A4.whatlevelamI(7) << endl;
+
     return 0;
 }
