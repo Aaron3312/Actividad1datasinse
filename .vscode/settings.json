@@ -8,7 +8,13 @@
     "xutility": "cpp",
     "ostream": "cpp",
     "iosfwd": "cpp",
-    "xstring": "cpp"
+    "xstring": "cpp",
+    "regex": "cpp",
+    "system_error": "cpp",
+    "type_traits": "cpp",
+    "xlocmon": "cpp",
+    "xlocnum": "cpp",
+    "xtr1common": "cpp"
   },
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "gcc",

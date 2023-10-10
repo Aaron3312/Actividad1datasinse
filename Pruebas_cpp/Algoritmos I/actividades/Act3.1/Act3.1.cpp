@@ -3,115 +3,143 @@
 
 using namespace std;
 
-struct Node{
+// Nodo La clase nodo es una clase que contiene un entero data y dos punteros a nodos, uno para el nodo izquierdo y otro para el nodo derecho.
+struct Node
+{
     int data;
-    Node* left;
-    Node* right;
-
+    Node *right;
+    Node *left;
     Node(int val) : data(val), left(NULL), right(NULL) {}
 };
-class BST{
-    private:
-        vector<int> vect;
-        Node* Root;
-        void insert (int&, Node*&);
-        void preOrder (Node*);
-        void inOrder (Node*);
-        void postOrder(Node*);
-        void levelByLevel(Node*);
-        int height(Node*);
-        void ancestors(Node*, int, vector<int>);
-        int whatlevelamI(Node*, int, int);
-        void DeleteAll(Node*) ;
-    public:
-        BST() : Root(NULL) {}
-        ~BST() {
-            DeleteAll(Root);
-        }
-        void insert(int &value) { insert(value, Root); }
-        void visit(int num);
-        void preOrder() { preOrder(Root); }
-        void inOrder() { inOrder(Root); }
-        void postOrder() { postOrder(Root); }
-        void levelByLevel() { levelByLevel(Root); }
-        int height() { return height(Root); }
-        void ancestors(int value) { ancestors(Root, value, vect); }
-        int whatlevelamI(int value) { return whatlevelamI(Root, value, 0); }
-        void DeleteAll() { DeleteAll(Root); }
+
+// Clase BST La clase BST es una clase que contiene un puntero a un nodo raíz y una función insert
+//  que se encarga de insertar un nuevo nodo en el árbol binario de búsqueda.
+class BST
+{
+private:
+    vector<int> vect; // Vector que contiene los ancestros
+    Node *Root; // Puntero a la raiz del arbol
+    int height(Node *); // Funcion que calcula la altura del arbol
+    void ancestors(Node *, int, vector<int>); // Funcion que calcula los ancestros de un valor dado
+    int whatlevelamI(Node *, int, int); // Funcion que calcula el nivel de un valor dado
+    void DeleteAll(Node *); // Funcion que elimina todos los nodos del arbol
+    void insert(int &, Node *&); // Funcion que inserta un nuevo nodo en el arbol
+    void preOrder(Node *); // Funcion que recorre el arbol en preOrder
+    void inOrder(Node *); // Funcion que recorre el arbol en inOrder
+    void postOrder(Node *); // Funcion que recorre el arbol en postOrder
+    void levelByLevel(Node *); // Funcion que recorre el arbol por niveles
+
+public:
+    void ancestors(int valor) { ancestors(Root, valor, vect); } 
+    int whatlevelamI(int valor) { return whatlevelamI(Root, valor, 0); }
+    void DeleteAll() { DeleteAll(Root); }
+    void insert(int &valor) { insert(valor, Root); }
+    void visit(int val);
+    void inOrder() { inOrder(Root); }
+    void postOrder() { postOrder(Root); }
+    BST() : Root(NULL) {}
+    ~BST() { cout << "DestructorActivated"<<endl;
+    DeleteAll(Root); }
+    void preOrder() { preOrder(Root); }
+    void levelByLevel() { levelByLevel(Root); }
+    int height() { return height(Root); }
 };
 
-//Funcion Insert
-void BST::insert(int &value, Node* &currentNode){
+// Insert Function La función insert es una función de la clase BST que se encarga de insertar un nuevo nodo en el árbol binario de búsqueda.
+//  Toma como parámetros una referencia a un entero valor y un puntero a un nodo currentNode. Si el puntero currentNode es nulo,
+//  se crea un nuevo nodo con el valor valor. Si el valor valor es menor que el valor del nodo actual,
+// se llama a la función insert recursivamente con el nodo izquierdo del nodo actual.
+void BST::insert(int &valor, Node *&currentNode) //La complejidad de la funcion es O(n)
+{
     if (currentNode == NULL)
-        currentNode = new Node(value);
-    else{
-        if (value < currentNode->data)
-            insert(value, currentNode->left);
-        else if (value > currentNode->data)
-            insert(value, currentNode->right);
+        currentNode = new Node(valor);
+    else
+    {
+        if (valor < currentNode->data)
+            insert(valor, currentNode->left);
+        else if (valor > currentNode->data)
+            insert(valor, currentNode->right);
         else
-            cout << "\nEl valor ya existe" << endl;
+            cout << "The value exist in the tree" << endl;
     }
 }
 
-//Funcion Visit
-void BST::visit(int num){
-    cout<<"\nVisit..."<<endl;
-    switch(num){
-        case 1: 
-            cout<<"preOrder"<<endl;
-            preOrder();
-            return;
-        case 2: 
-            cout<<"InOrder"<<endl;
-            inOrder();
-            return;
-        case 3: 
-            cout<<"PostOrder"<<endl;
-            postOrder();
-            return;
-        case 4: 
-            cout<<"LevelByLevel"<<endl;
-            levelByLevel();
-            return;
-        default: cout<<"Opcion no valida"<<endl;
+// Funcion Visit La función visit es una función de la clase BST que se encarga de imprimir el árbol binario de búsqueda.
+void BST::visit(int val) //La complejidad de la funcion es O(n)
+{
+    cout << "Visit Function" << endl;
+    switch (val)
+    {
+    case 1:
+        cout << "preOrder" << endl;
+        preOrder();
+        return;
+    case 2:
+        cout << "InOrder" << endl;
+        inOrder();
+        return;
+    case 3:
+        cout << "PostOrder" << endl;
+        postOrder();
+        return;
+    case 4:
+        cout << "LevelByLevel" << endl;
+        levelByLevel();
+        return;
+    default:
+        cout << "No valid option" << endl;
     }
 }
-void BST::preOrder(Node* currentNode){      //subFuncion preOrder
-    if (currentNode != NULL){
+// Funcion preOrder La función preOrder es una función de la clase BST que se encarga de imprimir el árbol binario de búsqueda en preOrder.
+void BST::preOrder(Node *currentNode)   
+{ // subFuncion preOrder
+    if (currentNode != NULL) 
+    {
         cout << currentNode->data << " ";
         preOrder(currentNode->left);
         preOrder(currentNode->right);
     }
-}   
-void BST::inOrder(Node* currentNode){       //subFuncion inOrder
-    if (currentNode != NULL){
+}
+// Funcion inOrder La función inOrder es una función de la clase BST que se encarga de imprimir el árbol binario de búsqueda en inOrder.
+void BST::inOrder(Node *currentNode)
+{ // subFuncion inOrder
+    if (currentNode != NULL)
+    {
         inOrder(currentNode->left);
         cout << currentNode->data << " ";
         inOrder(currentNode->right);
     }
 }
-void BST::postOrder(Node* currentNode){    //subFuncion postOrder
-    if (currentNode != NULL){
+// Funcion postOrder La función postOrder es una función de la clase BST que se encarga de imprimir el árbol binario de búsqueda en postOrder.
+void BST::postOrder(Node *currentNode)
+{ // subFuncion postOrder
+    if (currentNode != NULL)
+    {
         postOrder(currentNode->left);
         postOrder(currentNode->right);
         cout << currentNode->data << " ";
     }
 }
-void BST::levelByLevel(Node* currentNode){ //subFuncion levelByLevel
-    if (currentNode != NULL){
+// Funcion levelByLevel La función levelByLevel es una función de la clase BST que se encarga de imprimir el árbol binario de búsqueda por niveles.
+void BST::levelByLevel(Node *currentNode)
+{ // subFuncion levelByLevel
+    if (currentNode != NULL)
+    {
         cout << currentNode->data << " ";
         levelByLevel(currentNode->left);
         levelByLevel(currentNode->right);
     }
 }
 
-//Funcion Height
-int BST::height(Node* currentNode){
-    if (currentNode == NULL){
+// Funcion Height La función Height es una función de la clase BST que se encarga de calcular la altura del árbol binario de búsqueda.
+int BST::height(Node *currentNode) //La complejidad de la funcion es O(n)
+{
+    if (currentNode == NULL)
+    {
         return 0;
     }
-    else{
+    else
+    {
         int leftHeight = height(currentNode->left);
         int rightHeight = height(currentNode->right);
         if (leftHeight > rightHeight)
@@ -121,34 +149,34 @@ int BST::height(Node* currentNode){
     }
 }
 
-//Funcion Ancestors
-void BST::ancestors(Node* currentNode, int value, vector<int> vect){
-    if (currentNode == NULL)
-        cout << " " << endl;
+// Funcion Ancestors La función Ancestors es una función de la clase BST que se encarga de imprimir los ancestros de un valor dado.
+void BST::ancestors(Node *currentNode, int valor, vector<int> vect)  //La complejidad de la funcion es O(n)
+{
+    if (currentNode == NULL){
+        cout << "The value doesn't exist in the tree" << endl;
+        return;
+    }
     else{
-        if (value < currentNode->data){
-            ancestors(currentNode->left, value, vect);
+        vect.push_back(currentNode->data);
+        if (valor == currentNode->data){
+            for (int i = 0; i < vect.size() - 1; i++)
+                cout << vect[i] << " ";
+            return;
         }
-        else if (value > currentNode->data){
-            ancestors(currentNode->right, value, vect);
-        }
-        else{
-            if (vect.size() != 0){
-                for (int i = 0; i < vect.size(); i++){
-                    cout << vect[i] << " ";
-                }
-            }
-            else 
-                cout << "El valor no tiene ancestros" << endl;
-        }
+        else if (valor < currentNode->data)
+            ancestors(currentNode->left, valor, vect);
+        else if (valor > currentNode->data)
+            ancestors(currentNode->right, valor, vect);
     }
 }
 
-//Funcion whatlevelamI
-int BST::whatlevelamI(Node* currentNode, int value, int level){
+// Funcion whatlevelamI The function whatlevelamI is a member function of the BST class in the Act3.1.cpp file. It takes three parameters: a pointer to a Node object
+int BST::whatlevelamI(Node *currentNode, int value, int level) //La complejidad de la funcion es O(n)
+{
     if (currentNode == NULL)
         return -1;
-    else{
+    else
+    {
         if (value == currentNode->data)
             return level;
         else if (value < currentNode->data)
@@ -156,83 +184,87 @@ int BST::whatlevelamI(Node* currentNode, int value, int level){
         else if (value > currentNode->data)
             return whatlevelamI(currentNode->right, value, level + 1);
     }
+    return -1;
 }
 
-//Funcion DeleteAll
-void BST::DeleteAll(Node* currentNode){
-    if (currentNode != NULL){
+// Funcion DeleteAll La función DeleteAll es una función de la clase BST que se encarga de eliminar todos los nodos del árbol binario de búsqueda.
+void BST::DeleteAll(Node *currentNode) //La complejidad de la funcion es O(n)
+{
+    if (currentNode != NULL)
+    {
         DeleteAll(currentNode->left);
         DeleteAll(currentNode->right);
         delete currentNode;
     }
 }
 
-int main(){
-    //Pruebas
-    //---------------Primer caso-------------------//
-    //Un arbol con 7 nodos (1 repetido y un valor que no existe) 
-    cout<<"Primer caso"<<endl;
+int main()
+{
+
+    //First case a tree with only one node
+    cout << "First case" << endl;
     BST A1;
-    vector <int> v1 = {5, 3, 2, 4, 7, 6, 7};
-    for (int i : v1){
-        A1.insert(i);
-    }
+    vector<int> v1 = {3};
+    A1.insert(v1[0]);
     A1.visit(1);
     A1.visit(2);
     A1.visit(3);
     A1.visit(4);
-    cout << "\nAltura del arbol: " << A1.height() << endl;
-    cout << "Ancestros del valor 8: ";
-    A1.ancestors(8);
-    cout << "\nNivel del valor 6: " << A1.whatlevelamI(6) << endl;
-    
-    //---------------Segundo caso-------------------//
-    //Un arbol con 7 nodos (ninguno repetido y todos los valores existen) 
-    cout<<"\nSegundo caso"<<endl;
+    cout << "Tree's tall: " << A1.height() << endl;
+    cout << "Ancesters of the value 3:";
+    A1.ancestors(3);
+    cout << "\nLevel of the 3 value: " << A1.whatlevelamI(3) << endl;
+
+       // Second case a tree already ordered
+    cout << "Second case" << endl;
     BST A2;
-    vector <int> v2 = {5, 3, 2, 4, 7, 6, 8};
-    for (int i : v2){
+    vector<int> v2 = {1, 2, 3, 4, 5, 6, 7};
+    for (int i : v2)
+    {
         A2.insert(i);
     }
     A2.visit(1);
-    A1.visit(2);
-    A1.visit(3);
-    A1.visit(4);
-    cout << "\nAltura del arbol: " << A2.height() << endl;
-    cout << "Ancestros del valor 4: ";
-    A2.ancestors(4);
-    cout << "\nNivel del valor 4: " << A2.whatlevelamI(8) << endl;
+    A2.visit(2);
+    A2.visit(3);
+    A2.visit(4);
+    cout << "Tree's tall: " << A2.height() << endl;
+    cout << "Ancesters of the value 3: ";
+    A2.ancestors(3);
+    cout << "\nLevel of the 5 value: " << A2.whatlevelamI(5) << endl;
 
-    //---------------Tercer caso-------------------//
-    //Un arbol con 1 solo nodo
-    cout<<"\nTercer caso"<<endl;
+    // Third case a tree with 7 nodes (some repeated and some values that don't exist)
+    cout << "Third case" << endl;
     BST A3;
-    vector <int> v3 = {9};
-    A3.insert(v3[0]);
+    vector<int> v3 = {7, 2, 10, 2, 9, 3, 7};
+    for (int i : v3)
+    {
+        A3.insert(i);
+    }
     A3.visit(1);
-    A1.visit(2);
-    A1.visit(3);
-    A1.visit(4);
-    cout << "\nAltura del arbol: " << A3.height() << endl;
-    cout << "Ancestros del valor 9: ";
-    A3.ancestors(9);
-    cout << "\nNivel del valor 9: " << A3.whatlevelamI(9) << endl;
+    A3.visit(2);
+    A3.visit(3);
+    A3.visit(4);
+    cout << "\nTall of the tree: " << A3.height() << endl;
+    cout << "\nAncestros del valor 4: ";
+    A3.ancestors(4);
+    cout << "\nLevel of the value 2: " << A3.whatlevelamI(2) << endl;
 
-    //---------------Cuarto caso-------------------//
-    //Un arbol ya ordenado 
-    cout<<"\nCuarto caso"<<endl;
+    // Fourth case a tree with 7 nodes (none repeated and all values exist)
+    cout << "Fourth Case" << endl;
     BST A4;
-    vector <int> v4 = {1, 2, 3, 4, 5, 6, 7};
-    for (int i : v4){
+    vector<int> v4 = {12, 1, 6, 9, 3, 5, 2};
+    for (int i : v4)
+    {
         A4.insert(i);
     }
     A4.visit(1);
     A4.visit(2);
     A4.visit(3);
-    cout << "\nAltura del arbol: " << A4.height() << endl;
-    cout << "Ancestros del valor 5: ";
-    A4.ancestors(5);
-    cout << "\nNivel del valor 7: " << A4.whatlevelamI(7) << endl;
+    A4.visit(4);
+    cout << "Tree's tall: " << A4.height() << endl;
+    cout << "Ancesters of the value 4:";
+    A4.ancestors(4);
+    cout << "\nLevel of value 3: " << A4.whatlevelamI(3) << endl;
 
     return 0;
 }
