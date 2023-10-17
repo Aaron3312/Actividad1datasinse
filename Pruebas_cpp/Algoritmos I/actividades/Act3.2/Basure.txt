@@ -1,0 +1,57 @@
+   // Caso de prueba 1 (PQ con 8 datos)
+    cout << "\nCaso de prueba 1" << endl;
+    priority_queue pq1;
+    pq1.Push(3);
+    pq1.Push(5);
+    pq1.Push(1);
+    pq1.Push(2);
+    pq1.Push(4);
+    pq1.Push(6);
+    pq1.Push(7);
+    pq1.Push(8);
+    pq1.Pop();
+    cout << "Dato con la mayor prioridad: " << pq1.Top() << endl;
+    if (pq1.Empty() == true)
+        cout << "PQ esta vacio" << endl;
+    else
+        cout << "PQ no esta vacio" << endl;
+    cout << "Tamano de PQ: " << pq1.Size() << endl;
+
+    // Caso de prueba 2 (PQ con 5 datos)
+    cout << "\nCaso de prueba 2" << endl;
+    priority_queue pq2;
+    pq2.Push(1);
+    pq2.Push(2);
+    pq2.Push(3);
+    pq2.Push(4);
+    pq2.Push(5);
+    pq2.Pop();
+    cout << "Dato con la mayor prioridad: " << pq2.Top() << endl;
+    if (pq2.Empty() == true)
+        cout << "PQ esta vacio" << endl;
+    else
+        cout << "PQ no esta vacio" << endl;
+    cout << "Tamano de PQ: " << pq2.Size() << endl;
+
+    // Caso de prueba 3 (PQ con 0 datos)
+    cout << "\nCaso de prueba 3" << endl;
+    priority_queue pq3;
+    pq3.Pop();
+    cout << "Dato con la mayor prioridad: " << pq3.Top() << endl;
+    if (pq3.Empty() == true)
+        cout << "PQ esta vacio" << endl;
+    else
+        cout << "PQ no esta vacio" << endl;
+    cout << "Tamano de PQ: " << pq3.Size() << endl;
+
+    // Caso de prueba 4 (PQ con 1 dato)
+    cout << "\nCaso de prueba 4" << endl;
+    priority_queue pq4;
+    pq4.Push(1);
+    pq4.Pop();
+    cout << "Dato con la mayor prioridad: " << pq4.Top() << endl;
+    if (pq4.Empty() == true)
+        cout << "PQ esta vacio" << endl;
+    else
+        cout << "PQ no esta vacio" << endl;
+    cout << "Tamano de PQ: " << pq4.Size() << endl;
