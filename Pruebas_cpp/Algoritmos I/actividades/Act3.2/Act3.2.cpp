@@ -48,6 +48,7 @@ priority_queue::~priority_queue()
 }
 
 // Funcion Heapify para ordenar el vector y mantener la propiedad de heap
+// en el peor de los casos recorre todo por lo que es O(n)
 void priority_queue::heapify(vector<int> &heepTree, int index)
 {
     int size = heepTree.size();
@@ -66,6 +67,8 @@ void priority_queue::heapify(vector<int> &heepTree, int index)
     }
 }
 // Funcion Swap para intercambiar los valores de dos variables
+// es como una extension de la funcion heapify por lo que es O(1)
+
 void swap(int &a, int &b)
 {
     // unicamente cambia los valores, es interesante recordar el hecho del amperson para el paso por referencia
@@ -74,7 +77,11 @@ void swap(int &a, int &b)
     b = temp;
 }
 
-// Funcion Push para insertar un dato en el vector y mantener la propiedad de heap de maximos
+//Funcion Push para insertar un dato en el vector y mantener la propiedad de heap de 
+//La función coloca el nuevo valor al final del vector y a partir de ahí 
+//empieza a subir por el nuevo valor y aplicándole Heapify si es necesario, 
+//pero como no vuelve a recorrer todo el vector es O(log n)
+
 void priority_queue::Push(int data)
 {
     vect.push_back(data);
@@ -89,6 +96,7 @@ void priority_queue::Push(int data)
 }
 
 // Función Pop para eliminar el dato con mayor prioridad del vector y mantener la propiedad de heap de maximos
+// su complejidad es O(n) ya que en el peor de los casos recorre todo el vector
 void priority_queue::Pop()
 {
     int size = vect.size();
@@ -103,6 +111,7 @@ void priority_queue::Pop()
 }
 
 // Función Top para obtener el dato con mayor prioridad del vector y mantener la propiedad de heap de maximos
+// su complejidad es O(1) ya que unicamente regresa el primer elemento del vector
 int priority_queue::Top()
 {
     if (vect.size() != 0)
@@ -114,6 +123,7 @@ int priority_queue::Top()
 }
 
 // Función Empty para verificar si el vector esta vacio o no, en caso de estar vacio regresa true, en caso contrario regresa false
+// su complejidad es O(1) ya que unicamente verifica si el tamaño del vector es 0
 bool priority_queue::Empty()
 {
     if (vect.size() == 0)
@@ -123,12 +133,14 @@ bool priority_queue::Empty()
 }
 
 // Función Size para obtener el tamaño del vector y regresarlo como un entero
+// su complejidad es O(1) ya que unicamente regresa el tamaño del vector
 int priority_queue::Size()
 {
     return vect.size();
 }
 
 // Funcion DelleteAll para eliminar todos los elementos del vector
+// su complejidad es O(1) ya que unicamente elimina todos los elementos del vector
 void priority_queue::DeleteAll()
 {
     vect.clear();
@@ -223,7 +235,7 @@ int main()
     cout << "El tamano del vector es: " << pq.Size() << endl;
     cout << "El elemento con mayor prioridad es: " << pq.Top() << endl << endl;
 
-    
+
 
     return 0;
 }
