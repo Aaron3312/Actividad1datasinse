@@ -9,13 +9,13 @@
 
 using namespace std;
 
-struct ParrafoYPuerto // se crea la estructura tipo NODO
+struct ParrafoYIpInt // se crea la estructura tipo NODO
 {
     int port; // numero que tendra cada puerto
     string texto; //texto del parrafo
 };
 
-void GetLinesAndPortFromTxT(string bitacore, int &counts,vector<ParrafoYPuerto> &ParrafoYPuertoVector) // se obtienen los puertos y los parrafos del archivo de texto
+void GetLinesAndPortFromTxT(string bitacore, int &counts,vector<ParrafoYIpInt> &ParrafoYPuertoVector) // se obtienen los puertos y los parrafos del archivo de texto
 { // con base en el string que le introducimos es el nombre del archivo
     ifstream bitacora(bitacore);
 
@@ -223,7 +223,7 @@ void BST::Pop(){ // se elimina el nodo con mayor prioridad
 
 int main(){ // se crea el main
 
-    vector<ParrafoYPuerto> ParrafoYPuertoVector;
+    vector<ParrafoYIpInt> ParrafoYPuertoVector;
     int counts = 0;
     string bitacore = "bitacora.txt";
     GetLinesAndPortFromTxT(bitacore, counts, ParrafoYPuertoVector);

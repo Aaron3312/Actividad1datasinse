@@ -8,13 +8,13 @@
 using namespace std;
 
 
-struct ParrafoYPuerto // se crea la estructura tipo NODO
+struct ParrafoYIpInt // se crea la estructura tipo NODO
 {
     long port; // numero que tendra cada puerto
     string texto; //texto del parrafo
 };
 
-void GetLinesAndPortFromTxT(string bitacore, int &counts,vector<ParrafoYPuerto> &ParrafoYPuertoVector)
+void GetLinesAndPortFromTxT(string bitacore, int &counts,vector<ParrafoYIpInt> &ParrafoYPuertoVector)
 { // con base en el string que le introducimos es el nombre del archivo
     ifstream bitacora(bitacore);
 
@@ -53,7 +53,7 @@ void swap(int &a, int &b){
 
 
 int main(){
-    vector<ParrafoYPuerto> ParrafoYPuertoVector;
+    vector<ParrafoYIpInt> ParrafoYPuertoVector;
     int counts = 0;
     string bitacore = "bitacora.txt";
     GetLinesAndPortFromTxT(bitacore, counts, ParrafoYPuertoVector);

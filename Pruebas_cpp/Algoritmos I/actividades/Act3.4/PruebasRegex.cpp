@@ -8,7 +8,7 @@
 using namespace std;
 
 
-struct ParrafoYPuerto // se crea la estructura tipo NODO
+struct ParrafoYIpInt // se crea la estructura tipo NODO
 {
     long port; // numero que tendra cada puerto
     string texto; //texto del parrafo

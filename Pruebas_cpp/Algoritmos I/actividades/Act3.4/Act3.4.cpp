@@ -33,6 +33,7 @@ void GetLinesAndPortFromTxT(string bitacore, int &counts,vector<ParrafoYPuerto> 
 
         smatch match;
         linea = texto;
+        
         while (regex_search(texto, match, ipRegex))
         { // se busca la ip en la linea
             string Port = match[0];
