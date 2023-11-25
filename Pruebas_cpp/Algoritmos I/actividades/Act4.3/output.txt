@@ -1,18 +1,18 @@
-Vertice con mayor out-degree: 60
+Vertex with the highest occurrences: 60
 
-Lista de los 10 nodos con mayor valor de acum: 
-IP segment: 60,  Out-degree value: 236
-IP segment: 57,  Out-degree value: 204
-IP segment: 230,  Out-degree value: 35
-IP segment: 897,  Out-degree value: 33
-IP segment: 15,  Out-degree value: 185
-IP segment: 984,  Out-degree value: 39
-IP segment: 960,  Out-degree value: 33
-IP segment: 96,  Out-degree value: 216
-IP segment: 3,  Out-degree value: 213
-IP segment: 118,  Out-degree value: 28
+List of the top 10 nodes with the highest occurrences: 
+IP Segment: 60, Occurrences: 236
+IP Segment: 96, Occurrences: 216
+IP Segment: 984, Occurrences: 39
+IP Segment: 2, Occurrences: 188
+IP Segment: 3, Occurrences: 213
+IP Segment: 230, Occurrences: 35
+IP Segment: 960, Occurrences: 33
+IP Segment: 897, Occurrences: 33
+IP Segment: 118, Occurrences: 28
+IP Segment: 423, Occurrences: 41
 
-IPs con el vertice con mayor out-degree: 
+Logs with the vertex with the highest occurrences: 
 Sep 1 18:43:34 839.60.816.51:6940 Failed password for illegal user test
 Aug 8 18:51:12 176.60.269.48:4608 Illegal user
 Jul 21 00:37:42 996.60.573.10:5084 Failed password for illegal user test
