@@ -133,13 +133,13 @@ if (op == 1){
 // Driver program
 int main(){
     //metemos datos al azar
-    int data[]= {132, 223, 342, 422, 533, 64, 57, 658, 95, 410}; //10 datos
+    int data[]= {132, 223, 342, 342, 422, 533, 64, 57, 658, 95, 410}; //10 datos
     int size = sizeof(data) / sizeof(data[0]);//tamaño del arreglo
 
     HashTable Hq(size); // Create a HashTable of size 7
     HashTable Hc(size); 
 
-    for (int i = 0; i < size; i++){ // Inserting elements into Hash Table
+    for (int i = 0; i < size; i++){ // Inserting elements into Hash Table1
         Hc.insertItem(data[i]);
     }
     for (int i = 0; i < size; i++){
