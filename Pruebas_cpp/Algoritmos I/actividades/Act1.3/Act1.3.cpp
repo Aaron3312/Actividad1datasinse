@@ -17,6 +17,13 @@
 // g++ Act1.3.cpp -o Act1.3
 // ./Act1.3
 
+//cual era el comando para compilar esto en c++?
+// g++ Act1.3.cpp -o Act1.3
+// ./Act1.3
+
+//cual deberia ser el resultado
+// El resultado deberia ser un archivo llamado nuevaBitacora.txt que contenga los renglones ordenados por fecha
+
 #include <iostream>
 #include <fstream>
 #include <string>
