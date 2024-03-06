@@ -86,8 +86,16 @@ replic n (x : xs) = replicate n x ++ replic n xs
 
 expand :: [Int] -> [Int]
 expand xs = concat [replicate i x | (i, x) <- zip [1 ..] xs]
+-- zip [1..] xs crea una lista de tuplas donde el primer elemento de la tupla es el indice y el segundo es el valor
+-- replicate i x crea una lista con i elementos x
 
+-- Ejercicio 12
+-- la funcion binary recibe un entero n como entrada (n >= 0) si n es 0 regresa una lista vacia
+-- si n > 0 regresa un alista con una secuencia de unos y ceros que representan la representacion binaria de n
 
+binary :: Int -> [Int]
+binary 0 = []
+binary n = binary (n `div` 2) ++ [n `mod` 2]
 
 main = do
   print (positives [1, 2, -3, 4, 5, -6, 7, 8, 9, 10])
@@ -100,4 +108,5 @@ main = do
   print (average [5,6,1,6,0,1,2])
   print (standardDeviation [4, 8, 15, 16, 23, 42])
   print (replic 4 [1,2,3,4])
-  print (expand [1,2,3,4])
+  print (expand [4,2,5,4])
+  print (binary 543)
