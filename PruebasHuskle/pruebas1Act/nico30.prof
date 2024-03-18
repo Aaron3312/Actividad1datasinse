@@ -1,0 +1,31 @@
+	Wed Mar 13 00:06 2024 Time and Allocation Profiling Report  (Final)
+
+	   nico30.exe +RTS -p -hy -RTS
+
+	total time  =        0.00 secs   (0 ticks @ 1000 us, 1 processor)
+	total alloc =      55,992 bytes  (excludes profiling overheads)
+
+COST CENTRE  MODULE           SRC                       %time %alloc
+
+MAIN         MAIN             <built-in>                  0.0    1.0
+sumaTotalOpt Main             nico30.hs:(7,1)-(9,37)      0.0    2.7
+sumTotal     Main             nico30.hs:(2,1)-(4,29)      0.0    2.8
+main         Main             nico30.hs:(19,1)-(22,25)    0.0   27.0
+crearLista   Main             nico30.hs:(13,1)-(15,31)    0.0    3.5
+CAF          GHC.IO.Handle.FD <entire-module>             0.0   62.2
+
+
+                                                                                     individual      inherited
+COST CENTRE     MODULE                   SRC                      no.     entries  %time %alloc   %time %alloc
+
+MAIN            MAIN                     <built-in>               138           0    0.0    1.0     0.0  100.0
+ CAF            GHC.IO.StdHandles        <entire-module>          225           0    0.0    0.1     0.0    0.1
+ CAF            GHC.IO.Handle.FD         <entire-module>          219           0    0.0   62.2     0.0   62.2
+ CAF            GHC.IO.Encoding.CodePage <entire-module>          207           0    0.0    0.3     0.0    0.3
+ CAF            GHC.IO.Encoding          <entire-module>          206           0    0.0    0.2     0.0    0.2
+ CAF            Main                     <entire-module>          145           0    0.0    0.2     0.0   13.1
+  main          Main                     nico30.hs:(19,1)-(22,25) 276           1    0.0    3.8     0.0   12.8
+   crearLista   Main                     nico30.hs:(13,1)-(15,31) 280          11    0.0    3.5     0.0    3.5
+   sumTotal     Main                     nico30.hs:(2,1)-(4,29)   278          11    0.0    2.8     0.0    2.8
+   sumaTotalOpt Main                     nico30.hs:(7,1)-(9,37)   279          11    0.0    2.7     0.0    2.7
+ main           Main                     nico30.hs:(19,1)-(22,25) 277           0    0.0   23.2     0.0   23.2
