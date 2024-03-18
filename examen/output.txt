@@ -1,1 +1,32 @@
-[TComment "// Esto es un comentario",TVar "x",TAssign,TInt "10",TVar "y",TAssign,TInt "20",TVar "resultado",TAssign,TVar "x",TOp "+",TVar "y",TComment "// Suma de x e y",TVar "z",TAssign,TVar "resultado",TOp "-",TInt "5",TComment "// Resta",TComment "// Otro comentario",TVar "a",TAssign,TInt "4",TOp "+",TInt "5",TVar "b",TAssign,TVar "a",TOp "*",TInt "6",TVar "c",TAssign,TVar "b",TOp "/",TInt "2",TVar "d",TAssign,TInt "2",TVar "c",TVar "a",TAssign,TReal "45E-2",TVar "a",TAssign,TVar "b",TOp "-",TInt "2",TVar "a",TAssign,TLParenOpen,TVar "b",TOp "-",TInt "2",TLParenClose,TVar "a",TAssign,TInt "1",TOp "/",TInt "2",TReal "4.53",TOp "*"]
+Tipo			Valor
+----------------------------------------
+Variable		b
+Asignacion		=
+Entero			7
+Entero			-32
+Variable		a
+Asignacion		=
+Real			32.4
+Multiplicacion		*
+ParentesAbre		(
+Real			-8.6
+Resta			-
+Variable		b
+ParentesCierra		)
+Division		/
+Real			6.1E-8
+ParentesAbre		(
+ParentesCierra		)
+Variable		d
+Asignacion		=
+Variable		a
+Potencia		^
+Variable		b
+Comentario		// Esto es un comentario
+Real			-0.001E-3
+Variable		a_1
+Asignacion		=
+Real			1.0E-3
+Variable		a
+Resta			-
+Entero			1
