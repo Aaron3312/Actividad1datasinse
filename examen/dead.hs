@@ -1,3 +1,7 @@
+--Aaron Hernandez Jimenez A01642529
+--Actividad 2.3 - Examen de Haskell 
+--Fecha de entrega: 20/3/2024
+
 import Data.Char (isDigit, isLetter)
 import Data.List (intercalate, find)
 import Distribution.Compat.CharParsing (tab)
@@ -55,9 +59,9 @@ lexNumberOrReal cs =
             then Real num : lexer rest -- Números reales negativos con notación científica o punto decimal
             else Entero num : lexer rest -- Números enteros negativos
         _ ->
-          if 'E' `elem` num || 'e' `elem` num || '.' `elem` num
-            then Real num : lexer rest
-            else Entero num : lexer rest
+          if 'E' `elem` num || 'e' `elem` num || '.' `elem` num -- Maneja números reales y enteros
+            then Real num : lexer rest -- Números reales
+            else Entero num : lexer rest -- Números enteros
 
 
 -- Añadido función para manejar variables
@@ -68,6 +72,7 @@ lexIdentifier cs =
    in Variable ident : lexer rest
 
 --Funcion necesaria para convertir los tokens en string para la tabla.
+-- esto es para que se pueda imprimir de manera mas facil
 tokenToString :: Token -> String
 tokenToString token = case token of
   Entero n -> "Entero\t\t\t" ++ n
@@ -87,9 +92,9 @@ tokenToString token = case token of
 -- Función para convertir la lista de tokens en una tabla
 tokensToTable :: [Token] -> String
 tokensToTable tokens =
-  let headers = "\nTipo\t\t\tValor\n" ++ replicate 40 '-' ++ "\n"
-      rows = map tokenToString tokens
-   in headers ++ intercalate "\n" rows
+  let headers = "\nTipo\t\t\tValor\n" ++ replicate 40 '-' ++ "\n" -- Añadido encabezado para la tabla
+      rows = map tokenToString tokens -- Añadido conversión de tokens a strings
+   in headers ++ intercalate "\n" rows -- Añadido concatenación de encabezado y filas de la tabla
 
 --funcion con automata determinista para aprobar el lexer 
 
@@ -97,7 +102,7 @@ tokensToTable tokens =
 
 
 -- Función para validar el correcto uso de tokens en la lista de tokens
-validateLineTokens :: [Token] -> ValidationResult
+validateLineTokens :: [Token] -> ValidationResult -- Añadido tipo de retorno para la validación
 validateLineTokens tokens
   | null tokens = Left "Linea vacia"
   | not $ validarParentesis tokens 0 = Left "Desequilibrio de parentesis"
@@ -106,23 +111,24 @@ validateLineTokens tokens
   | otherwise = Right tokens
 
 
-
+-- Función para revisar que los paréntesis estén balanceados
 processAndValidateLines :: [String] -> [(LineNumber, ValidationResult)]
 processAndValidateLines lines = zipWith (\n line -> (n, validateLineTokens (lexer line))) [1..] lines
 
+-- Función para reportar los resultados de la validación
 reportValidationResults :: [(LineNumber, ValidationResult)] -> IO ()
 reportValidationResults results = mapM_ reportResult results
   where
     reportResult (lineNum, Right _) = putStrLn $ "Linea " ++ show lineNum ++ ": Valida"
     reportResult (lineNum, Left errorMsg) = putStrLn $ "Linea " ++ show lineNum ++ " Error: " ++ errorMsg
 
-
+-- Función para escribir las líneas válidas en output.txt y los errores en problemas.txt
 writeValidAndInvalidLines :: [(LineNumber, ValidationResult)] -> IO ()
 writeValidAndInvalidLines results = do
   let validLines = map (\(lineNum, Right tokens) -> (lineNum, tokens)) $ filter (\(_, result) -> case result of { Right _ -> True; _ -> False }) results
   let invalidLines = map (\(lineNum, Left errorMsg) -> (lineNum, errorMsg)) $ filter (\(_, result) -> case result of { Left _ -> True; _ -> False }) results
   writeFile "output.txt" $ intercalate "\n" $ map (tokensToTable . snd) validLines -- Escribir las líneas válidas en output.txt
-  writeFile "problemas.txt" $ intercalate "\n" $ map (\(lineNum, errorMsg) -> "Linea " ++ show lineNum ++ " Error: " ++ errorMsg) invalidLines
+  writeFile "problems.txt" $ intercalate "\n" $ map (\(lineNum, errorMsg) -> "Linea " ++ show lineNum ++ " Error: " ++ errorMsg) invalidLines
 
 
 -- Función auxiliar para validar el correcto balance de paréntesis
@@ -138,42 +144,45 @@ validarParentesis (t:ts) contador =
 -- funcion auxiliar para validar el correcto uso de que al inicio siempre exista una variable o un comentario, al igual que unicamente debe de haber la variable seguida de una asignacion
 validarInicio :: [Token] -> Bool
 validarInicio [] = False
-validarInicio [t] = case t of
+validarInicio [t] = case t of -- Caso base: solo hay un token
   Variable _ -> True
   Comentario _ -> True
   _ -> False
-validarInicio (t:ts) = case t of
+validarInicio (t:ts) = case t of -- Caso recursivo: hay más de un token
   Variable _ -> case head ts of
     Asignacion -> True
     _ -> False
   Comentario _ -> True
   _ -> False
-  
+
   
 
 -- Función para revisar que todos los operadores tengan como mínimo un operando a la izquierda y a la derecha
 validarOperadores :: [Token] -> Bool
 validarOperadores [] = True
-validarOperadores [t] = case t of
+validarOperadores [t] = case t of -- Caso base: solo hay un token
   Suma -> False
   Resta -> False
   Multiplicacion -> False
   Division -> False
   Potencia -> False
   _ -> True
-validarOperadores (t:ts) = case t of
+validarOperadores (t:ts) = case t of -- Caso recursivo: hay más de un token y se revisa el primer token
+-- se revisa la suma y la resta para ver si hay un operando a la izquierda y a la derecha
   Suma -> case head ts of
     Variable _ -> validarOperadores ts
     Entero _ -> validarOperadores ts
     Real _ -> validarOperadores ts
     ParentesisOpen -> validarOperadores ts
     _ -> False
-  Resta -> case head ts of
+  Resta -> case head ts of 
     Variable _ -> validarOperadores ts
     Entero _ -> validarOperadores ts
     Real _ -> validarOperadores ts
     ParentesisOpen -> validarOperadores ts
     _ -> False
+
+-- se revisa la multiplicacion y la division para ver si hay un operando a la izquierda y a la derecha
   Multiplicacion -> case head ts of
     Variable _ -> validarOperadores ts
     Entero _ -> validarOperadores ts
@@ -186,6 +195,8 @@ validarOperadores (t:ts) = case t of
     Real _ -> validarOperadores ts
     ParentesisOpen -> validarOperadores ts
     _ -> False
+
+-- se revisa la potencia para ver si hay un operando a la izquierda y a la derecha
   Potencia -> case head ts of
     Variable _ -> validarOperadores ts
     Entero _ -> validarOperadores ts

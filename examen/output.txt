@@ -1,89 +1,56 @@
-Tipo		Valor
-----------------------------------------
-Variable	b
-Asignacion	=
-Entero		7
 
-Tipo		Valor
+Tipo			Valor
 ----------------------------------------
-Variable	a
-Asignacion	=
-Real		32.4
-Operador	*
-ParentesisAbre	(
-Real		-8.6
-Operador	-
-Variable	b
-ParentesisCierra	)
-Operador	/
-Real		6.1E-8
+Variable		b
+Asignacion		=
+Entero			7
 
-Tipo		Valor
+Tipo			Valor
 ----------------------------------------
-Variable	d
-Asignacion	=
-Variable	a
-Operador	^
-Variable	b
-Comentario	// Esto es un comentario
+Variable		a
+Asignacion		=
+Real			32.4
+Multiplicacion		*
+ParentesAbre		(
+Real			-8.6
+Resta			-
+Variable		b
+ParentesCierra		)
+Division		/
+Real			6.1E-8
 
-Tipo		Valor
+Tipo			Valor
 ----------------------------------------
-Variable	a
-Asignacion	=
-Real		32.4
-Operador	*
-ParentesisAbre	(
-Real		-8.6
-Operador	-
-Variable	b
-ParentesisCierra	)
-Operador	/
-Real		6.1E-8
+Variable		d
+Asignacion		=
+Variable		a
+Potencia		^
+Variable		b
+Comentario		// Esto es un comentario
 
-Tipo		Valor
+Tipo			Valor
 ----------------------------------------
-Variable	d
-Asignacion	=
-Variable	a
-Operador	^
-Variable	b
-Comentario	// Esto es un comentario
+Variable		a
+Asignacion		=
+Real			32.4
+Multiplicacion		*
+ParentesAbre		(
+Real			-8.6
+Resta			-
+Variable		b
+ParentesCierra		)
+Division		/
+Real			6.1E-8
 
-Tipo		Valor
+Tipo			Valor
 ----------------------------------------
-Real		-0.001E-3
+Variable		d
+Asignacion		=
+Variable		a
+Potencia		^
+Variable		b
+Comentario		// Esto es un comentario
 
-Tipo		Valor
+Tipo			Valor
 ----------------------------------------
-Variable	a
-Operador	-
-Real		132E-3
-
-Tipo		Valor
-----------------------------------------
-Variable	a
-Asignacion	=
-Real		32.4
-Operador	*
-ParentesisAbre	(
-Real		-8.6
-Operador	-
-Variable	b
-ParentesisCierra	)
-Operador	/
-
-Tipo		Valor
-----------------------------------------
-Real		6.1E-8
-
-Tipo		Valor
-----------------------------------------
-Comentario	// Esto es un comentario
-
-Tipo		Valor
-----------------------------------------
-Variable	a
-Asignacion	=
-Operador	*
-Operador	*
+Comentario		// Esto es un comentario

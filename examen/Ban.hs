@@ -1,100 +1,112 @@
 import Data.Char (isDigit, isLetter)
 import Data.List (intercalate)
+import Data.Array.IO (writeArray)
 
 data Token
   = Entero String
-  | Real String
-  | Asignacion
-  | Variable String
-  | Comentario String
-  | Operador String
-  | Multiplicacion
   | Division
   | Suma
   | Resta
   | Potencia
   | ParentesisOpen
   | ParentesisCierre
+  | Real String
+  | Asignacion
+  | Variable String
+  | Comentario String
+  | Operador String
+  | Multiplicacion
+
   deriving (Show)
 
-type LineNumber = Int
-type ValidationResult = Either String [Token]
+type Nline = Int
+type RVal = Either String [Token]
 
 lexer :: String -> [Token]
 lexer [] = []
 lexer ('/':'/':cs) = [Comentario ('/':'/':cs)]
 lexer (c:cs)
-  | isDigit c || (c == '-' && not (null cs) && (isDigit (head cs) || head cs == '.')) = lexNumberOrReal (c:cs)
-  | isLetter c || c == '_' = lexIdentifier (c:cs)
+  | isDigit c || (c == '-' && not (null cs) && (isDigit (head cs) || head cs == '.')) = lexNoR (c:cs)
+  | isLetter c || c == '_' = iDentif (c:cs)
   | c == '=' = Asignacion : lexer cs
   | elem c "+-*/^" = Operador [c] : lexer cs
   | c == '(' = ParentesisOpen : lexer cs
   | c == ')' = ParentesisCierre : lexer cs
   | otherwise = lexer cs
 
-lexNumberOrReal :: String -> [Token]
-lexNumberOrReal cs =
+lexNoR :: String -> [Token]
+lexNoR cs =
   let (num, rest) = span (\x -> isDigit x || x == '.' || x == 'E' || x == 'e' || x == '-') cs
    in if elem '.' num || elem 'E' num || elem 'e' num
       then Real num : lexer rest
       else Entero num : lexer rest
 
-lexIdentifier :: String -> [Token]
-lexIdentifier cs =
+iDentif :: String -> [Token]
+iDentif cs =
   let (ident, rest) = span (\x -> isDigit x || isLetter x || x == '_') cs
    in Variable ident : lexer rest
 
-tokenToString :: Token -> String
-tokenToString token = case token of
+tkToSTR :: Token -> String
+tkToSTR token = case token of
+  ParentesisOpen -> "ParentesisAbre\t("
+  ParentesisCierre -> "ParentesisCierra\t)"
   Entero n -> "Entero\t\t" ++ n
   Real n -> "Real\t\t" ++ n
   Asignacion -> "Asignacion\t="
   Variable ident -> "Variable\t" ++ ident
   Comentario c -> "Comentario\t" ++ c
-  Operador op -> "Operador\t" ++ op
   Multiplicacion -> "Multiplicacion\t*"
   Division -> "Division\t/"
   Suma -> "Suma\t\t+"
   Resta -> "Resta\t\t-"
   Potencia -> "Potencia\t^"
-  ParentesisOpen -> "ParentesisAbre\t("
-  ParentesisCierre -> "ParentesisCierra\t)"
+  Operador op -> "Operador\t" ++ op
 
-tokensToTable :: [Token] -> String
-tokensToTable tokens =
+
+tables :: [Token] -> String
+tables tokens =
   let headers = "Tipo\tValor\n" ++ replicate 50 '-'
-      rows = map tokenToString tokens
+      rows = map tkToSTR tokens
    in headers ++ "\n" ++ intercalate "\n" rows
 
-processAndValidateLines :: [String] -> [(LineNumber, ValidationResult)]
-processAndValidateLines lines = zipWith (\n line -> (n, validateLineTokens (lexer line))) [1..] lines
+validLines :: [String] -> [(Nline, RVal)]
+validLines lines = zipWith (\n line -> (n, lineToken (lexer line))) [1..] lines
 
-validateLineTokens :: [Token] -> ValidationResult
-validateLineTokens tokens
-  | null tokens = Left "Línea vacía o comentario"
-  | not $ validarParentesis tokens 0 = Left "Desequilibrio de paréntesis"
+lineToken :: [Token] -> RVal
+lineToken tokens
+  | null tokens = Left "Línea vacía"
+  | not $ isParenthesesValid tokens 0 = Left "Paréntesis desbalanceados"
   | otherwise = Right tokens
 
-validarParentesis :: [Token] -> Int -> Bool
-validarParentesis [] 0 = True
-validarParentesis [] _ = False
-validarParentesis (ParentesisOpen:ts) n = validarParentesis ts (n + 1)
-validarParentesis (ParentesisCierre:ts) n = n > 0 && validarParentesis ts (n - 1)
-validarParentesis (_:ts) n = validarParentesis ts n
+isParenthesesValid :: [Token] -> Int -> Bool
+isParenthesesValid [] 0 = True -- Caso base: no hay tokens y los paréntesis están balanceados
+isParenthesesValid [] _ = False -- Caso base: no hay tokens pero los paréntesis no están balanceados
+isParenthesesValid (t:ts) contador =
+    case t of
+        ParentesisOpen ->  isParenthesesValid ts (contador + 1)
+        ParentesisCierre -> if contador <= 0 then False else isParenthesesValid ts (contador - 1)
+        _ -> isParenthesesValid ts contador
 
-reportValidationResults :: [(LineNumber, ValidationResult)] -> IO ()
-reportValidationResults results = mapM_ reportResult results
+
+logValidationResults :: [(Nline, RVal)] -> IO ()
+logValidationResults results = mapM_ reportResult results
   where
     reportResult (lineNum, Right _) = putStrLn $ "Línea " ++ show lineNum ++ ": Válida"
     reportResult (lineNum, Left errorMsg) = putStrLn $ "Línea " ++ show lineNum ++ ": Error - " ++ errorMsg
 
+recordValidData:: [(Nline, RVal)] -> IO ()
+recordValidData results = do
+  let validLines = map (\(lineNum, Right tokens) -> (lineNum, tokens)) $ filter (\(_, result) -> case result of { Right _ -> True; _ -> False }) results
+  writeFile "output.txt" $ intercalate "\n" $ map (tables . snd) validLines -- Escribir las líneas válidas en output.txt
+
+
+
 main :: IO ()
 main = do
-  putStrLn "Analizando el archivo input.txt..."
   contents <- readFile "input.txt"
   let linesOfContents = lines contents
-  let validationResults = processAndValidateLines linesOfContents
-  reportValidationResults validationResults
+  let validationResults = validLines linesOfContents
+  logValidationResults validationResults
   let validTokens = [tokens | (_, Right tokens) <- validationResults]
-  writeFile "output.txt" (intercalate "\n\n" $ map tokensToTable validTokens)
-  putStrLn "Análisis y escritura completados."
+  recordValidData validationResults
+
