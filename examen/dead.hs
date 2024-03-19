@@ -1,11 +1,11 @@
---Aaron Hernandez Jimenez A01642529
---Actividad 2.3 - Examen de Haskell 
---Fecha de entrega: 20/3/2024
+-- Aaron Hernandez Jimenez A01642529
+-- Actividad 2.3 - Examen de Haskell
+-- Fecha de entrega: 20/3/2024
 
+import Control.Monad.RWS (MonadState (put))
 import Data.Char (isDigit, isLetter)
-import Data.List (intercalate, find)
+import Data.List (find, intercalate)
 import Distribution.Compat.CharParsing (tab)
-import Control.Monad.RWS (MonadState(put))
 
 data Token -- Añadido token para manejar números enteros, reales, identificadores, comentarios, operadores y paréntesis
   = Entero String -- Añadido token para números enteros
@@ -24,13 +24,13 @@ data Token -- Añadido token para manejar números enteros, reales, identificado
   deriving (Show)
 
 type LineNumber = Int -- numero de linea
+
 type ValidationResult = Either String [Token] -- Ajustamos la función de validación para que devuelva Either String (para errores) o [Token] para una línea válida
 
 -- Ajustamos la función de validación para que devuelva Either String (para errores) o [Token] para una línea válida
 
-
 -- Añadido función para manejar el lexer
-lexer :: String -> [Token]
+lexer :: String -> [Token] -- el lexer funciona para separar los tokens de la cadena de texto que se le pasa como parametro y regresa una lista de tokens
 lexer [] = []
 lexer ('/' : '/' : cs) = [Comentario ('/' : '/' : cs)] -- Maneja comentarios
 lexer (c : cs)
@@ -63,7 +63,6 @@ lexNumberOrReal cs =
             then Real num : lexer rest -- Números reales
             else Entero num : lexer rest -- Números enteros
 
-
 -- Añadido función para manejar variables
 -- funcion mejorada para aceptar variables con numeros y guiones bajos
 lexIdentifier :: String -> [Token]
@@ -71,7 +70,7 @@ lexIdentifier cs =
   let (ident, rest) = span (\x -> isDigit x || isLetter x || x == '_') cs
    in Variable ident : lexer rest
 
---Funcion necesaria para convertir los tokens en string para la tabla.
+-- Funcion necesaria para convertir los tokens en string para la tabla.
 -- esto es para que se pueda imprimir de manera mas facil
 tokenToString :: Token -> String
 tokenToString token = case token of
@@ -96,10 +95,9 @@ tokensToTable tokens =
       rows = map tokenToString tokens -- Añadido conversión de tokens a strings
    in headers ++ intercalate "\n" rows -- Añadido concatenación de encabezado y filas de la tabla
 
---funcion con automata determinista para aprobar el lexer 
+-- funcion con automata determinista para aprobar el lexer
 
---funcion para comprobar que sea correcto el uso de los inputs en input.txt
-
+-- funcion para comprobar que sea correcto el uso de los inputs en input.txt
 
 -- Función para validar el correcto uso de tokens en la lista de tokens
 validateLineTokens :: [Token] -> ValidationResult -- Añadido tipo de retorno para la validación
@@ -110,10 +108,9 @@ validateLineTokens tokens
   | not $ validarOperadores tokens = Left "Operador sin operandos"
   | otherwise = Right tokens
 
-
 -- Función para revisar que los paréntesis estén balanceados
 processAndValidateLines :: [String] -> [(LineNumber, ValidationResult)]
-processAndValidateLines lines = zipWith (\n line -> (n, validateLineTokens (lexer line))) [1..] lines
+processAndValidateLines lines = zipWith (\n line -> (n, validateLineTokens (lexer line))) [1 ..] lines
 
 -- Función para reportar los resultados de la validación
 reportValidationResults :: [(LineNumber, ValidationResult)] -> IO ()
@@ -125,21 +122,20 @@ reportValidationResults results = mapM_ reportResult results
 -- Función para escribir las líneas válidas en output.txt y los errores en problemas.txt
 writeValidAndInvalidLines :: [(LineNumber, ValidationResult)] -> IO ()
 writeValidAndInvalidLines results = do
-  let validLines = map (\(lineNum, Right tokens) -> (lineNum, tokens)) $ filter (\(_, result) -> case result of { Right _ -> True; _ -> False }) results
-  let invalidLines = map (\(lineNum, Left errorMsg) -> (lineNum, errorMsg)) $ filter (\(_, result) -> case result of { Left _ -> True; _ -> False }) results
+  let validLines = map (\(lineNum, Right tokens) -> (lineNum, tokens)) $ filter (\(_, result) -> case result of Right _ -> True; _ -> False) results
+  let invalidLines = map (\(lineNum, Left errorMsg) -> (lineNum, errorMsg)) $ filter (\(_, result) -> case result of Left _ -> True; _ -> False) results
   writeFile "output.txt" $ intercalate "\n" $ map (tokensToTable . snd) validLines -- Escribir las líneas válidas en output.txt
   writeFile "problems.txt" $ intercalate "\n" $ map (\(lineNum, errorMsg) -> "Linea " ++ show lineNum ++ " Error: " ++ errorMsg) invalidLines
-
 
 -- Función auxiliar para validar el correcto balance de paréntesis
 validarParentesis :: [Token] -> Int -> Bool
 validarParentesis [] 0 = True -- Caso base: no hay tokens y los paréntesis están balanceados
 validarParentesis [] _ = False -- Caso base: no hay tokens pero los paréntesis no están balanceados
-validarParentesis (t:ts) contador =
-    case t of
-        ParentesisOpen ->  validarParentesis ts (contador + 1)
-        ParentesisCierre -> if contador <= 0 then False else validarParentesis ts (contador - 1)
-        _ -> validarParentesis ts contador
+validarParentesis (t : ts) contador =
+  case t of
+    ParentesisOpen -> validarParentesis ts (contador + 1)
+    ParentesisCierre -> if contador <= 0 then False else validarParentesis ts (contador - 1)
+    _ -> validarParentesis ts contador
 
 -- funcion auxiliar para validar el correcto uso de que al inicio siempre exista una variable o un comentario, al igual que unicamente debe de haber la variable seguida de una asignacion
 validarInicio :: [Token] -> Bool
@@ -148,14 +144,12 @@ validarInicio [t] = case t of -- Caso base: solo hay un token
   Variable _ -> True
   Comentario _ -> True
   _ -> False
-validarInicio (t:ts) = case t of -- Caso recursivo: hay más de un token
+validarInicio (t : ts) = case t of -- Caso recursivo: hay más de un token
   Variable _ -> case head ts of
     Asignacion -> True
     _ -> False
   Comentario _ -> True
   _ -> False
-
-  
 
 -- Función para revisar que todos los operadores tengan como mínimo un operando a la izquierda y a la derecha
 validarOperadores :: [Token] -> Bool
@@ -167,7 +161,7 @@ validarOperadores [t] = case t of -- Caso base: solo hay un token
   Division -> False
   Potencia -> False
   _ -> True
-validarOperadores (t:ts) = case t of -- Caso recursivo: hay más de un token y se revisa el primer token
+validarOperadores (t : ts) = case t of -- Caso recursivo: hay más de un token y se revisa el primer token
 -- se revisa la suma y la resta para ver si hay un operando a la izquierda y a la derecha
   Suma -> case head ts of
     Variable _ -> validarOperadores ts
@@ -175,14 +169,13 @@ validarOperadores (t:ts) = case t of -- Caso recursivo: hay más de un token y s
     Real _ -> validarOperadores ts
     ParentesisOpen -> validarOperadores ts
     _ -> False
-  Resta -> case head ts of 
+  Resta -> case head ts of
     Variable _ -> validarOperadores ts
     Entero _ -> validarOperadores ts
     Real _ -> validarOperadores ts
     ParentesisOpen -> validarOperadores ts
     _ -> False
-
--- se revisa la multiplicacion y la division para ver si hay un operando a la izquierda y a la derecha
+  -- se revisa la multiplicacion y la division para ver si hay un operando a la izquierda y a la derecha
   Multiplicacion -> case head ts of
     Variable _ -> validarOperadores ts
     Entero _ -> validarOperadores ts
@@ -195,8 +188,7 @@ validarOperadores (t:ts) = case t of -- Caso recursivo: hay más de un token y s
     Real _ -> validarOperadores ts
     ParentesisOpen -> validarOperadores ts
     _ -> False
-
--- se revisa la potencia para ver si hay un operando a la izquierda y a la derecha
+  -- se revisa la potencia para ver si hay un operando a la izquierda y a la derecha
   Potencia -> case head ts of
     Variable _ -> validarOperadores ts
     Entero _ -> validarOperadores ts
@@ -204,7 +196,6 @@ validarOperadores (t:ts) = case t of -- Caso recursivo: hay más de un token y s
     ParentesisOpen -> validarOperadores ts
     _ -> False
   _ -> validarOperadores ts
-
 
 -- Función para probar el lexer con un archivo
 main :: IO ()
