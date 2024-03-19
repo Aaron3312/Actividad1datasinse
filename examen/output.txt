@@ -1,32 +1,89 @@
-Tipo			Valor
+Tipo		Valor
 ----------------------------------------
-Variable		b
-Asignacion		=
-Entero			7
-Entero			-32
-Variable		a
-Asignacion		=
-Real			32.4
-Multiplicacion		*
-ParentesAbre		(
-Real			-8.6
-Resta			-
-Variable		b
-ParentesCierra		)
-Division		/
-Real			6.1E-8
-ParentesAbre		(
-ParentesCierra		)
-Variable		d
-Asignacion		=
-Variable		a
-Potencia		^
-Variable		b
-Comentario		// Esto es un comentario
-Real			-0.001E-3
-Variable		a_1
-Asignacion		=
-Real			1.0E-3
-Variable		a
-Resta			-
-Entero			1
+Variable	b
+Asignacion	=
+Entero		7
+
+Tipo		Valor
+----------------------------------------
+Variable	a
+Asignacion	=
+Real		32.4
+Operador	*
+ParentesisAbre	(
+Real		-8.6
+Operador	-
+Variable	b
+ParentesisCierra	)
+Operador	/
+Real		6.1E-8
+
+Tipo		Valor
+----------------------------------------
+Variable	d
+Asignacion	=
+Variable	a
+Operador	^
+Variable	b
+Comentario	// Esto es un comentario
+
+Tipo		Valor
+----------------------------------------
+Variable	a
+Asignacion	=
+Real		32.4
+Operador	*
+ParentesisAbre	(
+Real		-8.6
+Operador	-
+Variable	b
+ParentesisCierra	)
+Operador	/
+Real		6.1E-8
+
+Tipo		Valor
+----------------------------------------
+Variable	d
+Asignacion	=
+Variable	a
+Operador	^
+Variable	b
+Comentario	// Esto es un comentario
+
+Tipo		Valor
+----------------------------------------
+Real		-0.001E-3
+
+Tipo		Valor
+----------------------------------------
+Variable	a
+Operador	-
+Real		132E-3
+
+Tipo		Valor
+----------------------------------------
+Variable	a
+Asignacion	=
+Real		32.4
+Operador	*
+ParentesisAbre	(
+Real		-8.6
+Operador	-
+Variable	b
+ParentesisCierra	)
+Operador	/
+
+Tipo		Valor
+----------------------------------------
+Real		6.1E-8
+
+Tipo		Valor
+----------------------------------------
+Comentario	// Esto es un comentario
+
+Tipo		Valor
+----------------------------------------
+Variable	a
+Asignacion	=
+Operador	*
+Operador	*

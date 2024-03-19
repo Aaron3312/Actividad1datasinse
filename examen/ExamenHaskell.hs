@@ -107,8 +107,5 @@ main = do
   let tokens = concatMap lexer (lines contents)
   let table = tokensToTable tokens
   print tokens
-  putStrLn $ "Cantidad de saltos de linea: " ++ show salto
-  putStrLn $ "Cantidad de saltos de linea con texto: " ++ show saltoConTexto
   putStrLn table
   writeFile "output.txt" table
-  if correcto tokens then putStrLn "Correcto" else putStrLn "Incorrecto"

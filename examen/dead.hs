@@ -19,8 +19,8 @@ data Token -- Añadido token para manejar números enteros, reales, identificado
   | ParentesisCierre -- Añadido token para el paréntesis derecho
   deriving (Show)
 
-type LineNumber = Int
-type ValidationResult = Either String [Token]
+type LineNumber = Int -- numero de linea
+type ValidationResult = Either String [Token] -- Ajustamos la función de validación para que devuelva Either String (para errores) o [Token] para una línea válida
 
 -- Ajustamos la función de validación para que devuelva Either String (para errores) o [Token] para una línea válida
 
@@ -44,6 +44,7 @@ lexer (c : cs)
 
 -- Añadido función para manejar números
 -- Función ajustada para manejar números, incluyendo negativos
+-- funcion ajustada para manejar tambien los numeros reales
 lexNumberOrReal :: String -> [Token]
 lexNumberOrReal cs =
   let (num, rest) = span (\x -> isDigit x || x == '.' || x == 'E' || x == 'e' || x == '-' || (x == '-' && (not . null) cs && (isDigit (head cs) || head cs == '.'))) cs
@@ -58,13 +59,15 @@ lexNumberOrReal cs =
             then Real num : lexer rest
             else Entero num : lexer rest
 
--- Añadido función para manejar identificadores
+
+-- Añadido función para manejar variables
+-- funcion mejorada para aceptar variables con numeros y guiones bajos
 lexIdentifier :: String -> [Token]
 lexIdentifier cs =
   let (ident, rest) = span (\x -> isDigit x || isLetter x || x == '_') cs
    in Variable ident : lexer rest
 
--- Definir la función que convierte un token en una representación de string para la fila de una tabla
+--Funcion necesaria para convertir los tokens en string para la tabla.
 tokenToString :: Token -> String
 tokenToString token = case token of
   Entero n -> "Entero\t\t\t" ++ n
@@ -84,31 +87,25 @@ tokenToString token = case token of
 -- Función para convertir la lista de tokens en una tabla
 tokensToTable :: [Token] -> String
 tokensToTable tokens =
-  let headers = "Tipo\t\t\tValor\n" ++ replicate 40 '-' ++ "\n"
+  let headers = "\nTipo\t\t\tValor\n" ++ replicate 40 '-' ++ "\n"
       rows = map tokenToString tokens
    in headers ++ intercalate "\n" rows
 
 --funcion con automata determinista para aprobar el lexer 
-
---funcion que lea cuantas veces se repite un salto de linea en el txt
-saltoDeLinea :: String -> Int
-saltoDeLinea [] = 1
-saltoDeLinea (x:xs) = if x == '\n' then 1 + saltoDeLinea xs else saltoDeLinea xs
-
---funcion que con los saltos de linea cuenta cuantos hay con algo escrito
-saltoDeLineaConTexto :: String -> Int
-saltoDeLineaConTexto [] = 0
-saltoDeLineaConTexto (x:xs) = if x == '\n' then if (length xs) > 0 then if (head xs) /= '\n' then 1 + saltoDeLineaConTexto xs else saltoDeLineaConTexto xs else 0 else saltoDeLineaConTexto xs
 
 --funcion para comprobar que sea correcto el uso de los inputs en input.txt
 
 
 -- Función para validar el correcto uso de tokens en la lista de tokens
 validateLineTokens :: [Token] -> ValidationResult
-validateLineTokens tokens =
-  if validarParentesis tokens 0
-  then Right tokens
-  else Left "Desequilibrio de paréntesis"
+validateLineTokens tokens
+  | null tokens = Left "Linea vacia"
+  | not $ validarParentesis tokens 0 = Left "Desequilibrio de parentesis"
+  | not $ validarInicio tokens = Left "No inicia con una variable"
+  | not $ validarOperadores tokens = Left "Operador sin operandos"
+  | otherwise = Right tokens
+
+
 
 processAndValidateLines :: [String] -> [(LineNumber, ValidationResult)]
 processAndValidateLines lines = zipWith (\n line -> (n, validateLineTokens (lexer line))) [1..] lines
@@ -116,9 +113,16 @@ processAndValidateLines lines = zipWith (\n line -> (n, validateLineTokens (lexe
 reportValidationResults :: [(LineNumber, ValidationResult)] -> IO ()
 reportValidationResults results = mapM_ reportResult results
   where
-    reportResult (lineNum, Right _) = putStrLn $ "Línea " ++ show lineNum ++ ": Válida"
-    reportResult (lineNum, Left errorMsg) = putStrLn $ "Línea " ++ show lineNum ++ " Error: " ++ errorMsg
+    reportResult (lineNum, Right _) = putStrLn $ "Linea " ++ show lineNum ++ ": Valida"
+    reportResult (lineNum, Left errorMsg) = putStrLn $ "Linea " ++ show lineNum ++ " Error: " ++ errorMsg
 
+
+writeValidAndInvalidLines :: [(LineNumber, ValidationResult)] -> IO ()
+writeValidAndInvalidLines results = do
+  let validLines = map (\(lineNum, Right tokens) -> (lineNum, tokens)) $ filter (\(_, result) -> case result of { Right _ -> True; _ -> False }) results
+  let invalidLines = map (\(lineNum, Left errorMsg) -> (lineNum, errorMsg)) $ filter (\(_, result) -> case result of { Left _ -> True; _ -> False }) results
+  writeFile "output.txt" $ intercalate "\n" $ map (tokensToTable . snd) validLines -- Escribir las líneas válidas en output.txt
+  writeFile "problemas.txt" $ intercalate "\n" $ map (\(lineNum, errorMsg) -> "Linea " ++ show lineNum ++ " Error: " ++ errorMsg) invalidLines
 
 
 -- Función auxiliar para validar el correcto balance de paréntesis
@@ -127,25 +131,81 @@ validarParentesis [] 0 = True -- Caso base: no hay tokens y los paréntesis est�
 validarParentesis [] _ = False -- Caso base: no hay tokens pero los paréntesis no están balanceados
 validarParentesis (t:ts) contador =
     case t of
-        ParentesisOpen -> validarParentesis ts (contador + 1)
+        ParentesisOpen ->  validarParentesis ts (contador + 1)
         ParentesisCierre -> if contador <= 0 then False else validarParentesis ts (contador - 1)
         _ -> validarParentesis ts contador
+
+-- funcion auxiliar para validar el correcto uso de que al inicio siempre exista una variable o un comentario, al igual que unicamente debe de haber la variable seguida de una asignacion
+validarInicio :: [Token] -> Bool
+validarInicio [] = False
+validarInicio [t] = case t of
+  Variable _ -> True
+  Comentario _ -> True
+  _ -> False
+validarInicio (t:ts) = case t of
+  Variable _ -> case head ts of
+    Asignacion -> True
+    _ -> False
+  Comentario _ -> True
+  _ -> False
+  
+  
+
+-- Función para revisar que todos los operadores tengan como mínimo un operando a la izquierda y a la derecha
+validarOperadores :: [Token] -> Bool
+validarOperadores [] = True
+validarOperadores [t] = case t of
+  Suma -> False
+  Resta -> False
+  Multiplicacion -> False
+  Division -> False
+  Potencia -> False
+  _ -> True
+validarOperadores (t:ts) = case t of
+  Suma -> case head ts of
+    Variable _ -> validarOperadores ts
+    Entero _ -> validarOperadores ts
+    Real _ -> validarOperadores ts
+    ParentesisOpen -> validarOperadores ts
+    _ -> False
+  Resta -> case head ts of
+    Variable _ -> validarOperadores ts
+    Entero _ -> validarOperadores ts
+    Real _ -> validarOperadores ts
+    ParentesisOpen -> validarOperadores ts
+    _ -> False
+  Multiplicacion -> case head ts of
+    Variable _ -> validarOperadores ts
+    Entero _ -> validarOperadores ts
+    Real _ -> validarOperadores ts
+    ParentesisOpen -> validarOperadores ts
+    _ -> False
+  Division -> case head ts of
+    Variable _ -> validarOperadores ts
+    Entero _ -> validarOperadores ts
+    Real _ -> validarOperadores ts
+    ParentesisOpen -> validarOperadores ts
+    _ -> False
+  Potencia -> case head ts of
+    Variable _ -> validarOperadores ts
+    Entero _ -> validarOperadores ts
+    Real _ -> validarOperadores ts
+    ParentesisOpen -> validarOperadores ts
+    _ -> False
+  _ -> validarOperadores ts
+
 
 -- Función para probar el lexer con un archivo
 main :: IO ()
 main = do
-  putStrLn "Lexer"
+  putStrLn "Analizando el archivo input.txt..."
   contents <- readFile "input.txt"
-  let salto = saltoDeLinea contents
-  let saltoConTexto = saltoDeLineaConTexto contents 
+  let linesOfContents = lines contents
+  let validationResults = processAndValidateLines linesOfContents
+  reportValidationResults validationResults
+  putStrLn "Análisis completado."
   let tokens = concatMap lexer (lines contents)
-  let esValido = validarTokens tokens
-  putStrLn $ "La secuencia de tokens es " ++ (if esValido then "válida" else "inválida")
-  if esValido then do
-        putStrLn "Los tokens son válidos."
-    else
-        putStrLn "Se encontraron errores en los tokens. Revisa el archivo input.txt."
   let table = tokensToTable tokens
-  putStrLn table
-  writeFile "output.txt" table
--- End of file
+  writeValidAndInvalidLines validationResults
+  putStrLn "Tabla generada en output.txt"
+  putStrLn "guardando los problemas en problemas.txt"
