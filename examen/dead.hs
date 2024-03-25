@@ -13,14 +13,13 @@ data Token -- Añadido token para manejar números enteros, reales, identificado
   | Asignacion -- Añadido token para el operador de asignación
   | Variable String -- Añadido token para identificadores
   | Comentario String -- Añadido token para comentarios
-  | Operador String -- Añadido token para operadores
   | Multiplicacion -- Añadido token para el operador de multiplicación
   | Division -- Añadido token para el operador de división
   | Suma -- Añadido token para el operador de suma
   | Resta -- Añadido token para el operador de resta
   | Potencia -- Añadido token para el operador de potencia
-  | ParentesisOpen -- Añadido token para el paréntesis izquierdo
-  | ParentesisCierre -- Añadido token para el paréntesis derecho
+  | ParentesAbierto -- Añadido token para el paréntesis izquierdo
+  | ParentesCerrado -- Añadido token para el paréntesis derecho
   deriving (Show)
 
 type LineNumber = Int -- numero de linea
@@ -41,8 +40,8 @@ lexer (c : cs)
   | c == '-' = Resta : lexer cs -- Añadido manejo del operador de resta
   | c == '/' = Division : lexer cs -- Añadido manejo del operador de división
   | c == '*' = Multiplicacion : lexer cs -- Añadido manejo del operador de multiplicación
-  | c == '(' = ParentesisOpen : lexer cs -- Añadido manejo del paréntesis izquierdo
-  | c == ')' = ParentesisCierre : lexer cs -- Añadido manejo del paréntesis derecho
+  | c == '(' = ParentesAbierto : lexer cs -- Añadido manejo del paréntesis izquierdo
+  | c == ')' = ParentesCerrado : lexer cs -- Añadido manejo del paréntesis derecho
   | c == '^' = Potencia : lexer cs -- Añadido manejo del operador de potencia
   | otherwise = lexer cs
 
@@ -79,9 +78,8 @@ tokenToString token = case token of
   Asignacion -> "Asignacion\t\t="
   Variable ident -> "Variable\t\t" ++ ident
   Comentario c -> "Comentario\t\t" ++ c
-  Operador op -> "Operador\t\t" ++ op
-  ParentesisOpen -> "ParentesAbre\t\t("
-  ParentesisCierre -> "ParentesCierra\t\t)"
+  ParentesAbierto -> "ParentesAbre\t\t("
+  ParentesCerrado -> "ParentesCierra\t\t)"
   Suma -> "Suma\t\t\t+"
   Resta -> "Resta\t\t\t-"
   Multiplicacion -> "Multiplicacion\t\t*"
@@ -133,8 +131,8 @@ validarParentesis [] 0 = True -- Caso base: no hay tokens y los paréntesis est�
 validarParentesis [] _ = False -- Caso base: no hay tokens pero los paréntesis no están balanceados
 validarParentesis (t : ts) contador =
   case t of
-    ParentesisOpen -> validarParentesis ts (contador + 1)
-    ParentesisCierre -> if contador <= 0 then False else validarParentesis ts (contador - 1)
+    ParentesAbierto -> validarParentesis ts (contador + 1)
+    ParentesCerrado -> if contador <= 0 then False else validarParentesis ts (contador - 1)
     _ -> validarParentesis ts contador
 
 -- funcion auxiliar para validar el correcto uso de que al inicio siempre exista una variable o un comentario, al igual que unicamente debe de haber la variable seguida de una asignacion
@@ -167,33 +165,33 @@ validarOperadores (t : ts) = case t of -- Caso recursivo: hay más de un token y
     Variable _ -> validarOperadores ts
     Entero _ -> validarOperadores ts
     Real _ -> validarOperadores ts
-    ParentesisOpen -> validarOperadores ts
+    ParentesAbierto -> validarOperadores ts
     _ -> False
   Resta -> case head ts of
     Variable _ -> validarOperadores ts
     Entero _ -> validarOperadores ts
     Real _ -> validarOperadores ts
-    ParentesisOpen -> validarOperadores ts
+    ParentesAbierto -> validarOperadores ts
     _ -> False
   -- se revisa la multiplicacion y la division para ver si hay un operando a la izquierda y a la derecha
   Multiplicacion -> case head ts of
     Variable _ -> validarOperadores ts
     Entero _ -> validarOperadores ts
     Real _ -> validarOperadores ts
-    ParentesisOpen -> validarOperadores ts
+    ParentesAbierto -> validarOperadores ts
     _ -> False
   Division -> case head ts of
     Variable _ -> validarOperadores ts
     Entero _ -> validarOperadores ts
     Real _ -> validarOperadores ts
-    ParentesisOpen -> validarOperadores ts
+    ParentesAbierto -> validarOperadores ts
     _ -> False
   -- se revisa la potencia para ver si hay un operando a la izquierda y a la derecha
   Potencia -> case head ts of
     Variable _ -> validarOperadores ts
     Entero _ -> validarOperadores ts
     Real _ -> validarOperadores ts
-    ParentesisOpen -> validarOperadores ts
+    ParentesAbierto -> validarOperadores ts
     _ -> False
   _ -> validarOperadores ts
 

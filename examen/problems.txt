@@ -1,11 +1,11 @@
-Linea 2 Error: Linea vacia
-Linea 4 Error: No inicia con una variable
-Linea 6 Error: Linea vacia
-Linea 9 Error: No inicia con una variable
+Linea 3 Error: No inicia con una variable
+Linea 5 Error: No inicia con una variable
 Linea 10 Error: No inicia con una variable
-Linea 11 Error: Operador sin operandos
-Linea 12 Error: Desequilibrio de parentesis
-Linea 13 Error: Operador sin operandos
-Linea 14 Error: No inicia con una variable
-Linea 16 Error: Linea vacia
-Linea 17 Error: Operador sin operandos
+Linea 11 Error: No inicia con una variable
+Linea 12 Error: Operador sin operandos
+Linea 13 Error: Desequilibrio de parentesis
+Linea 15 Error: Operador sin operandos
+Linea 16 Error: No inicia con una variable
+Linea 18 Error: Operador sin operandos
+Linea 19 Error: No inicia con una variable
+Linea 20 Error: No inicia con una variable

@@ -7,26 +7,8 @@ Entero			7
 
 Tipo			Valor
 ----------------------------------------
-Variable		a
+Variable		a3
 Asignacion		=
-Real			32.4
-Multiplicacion		*
-ParentesAbre		(
-Real			-8.6
-Resta			-
-Variable		b
-ParentesCierra		)
-Division		/
-Real			6.1E-8
-
-Tipo			Valor
-----------------------------------------
-Variable		d
-Asignacion		=
-Variable		a
-Potencia		^
-Variable		b
-Comentario		// Esto es un comentario
 
 Tipo			Valor
 ----------------------------------------
@@ -50,6 +32,37 @@ Variable		a
 Potencia		^
 Variable		b
 Comentario		// Esto es un comentario
+
+Tipo			Valor
+----------------------------------------
+Variable		a
+
+Tipo			Valor
+----------------------------------------
+Variable		a
+Asignacion		=
+Real			32.4
+Multiplicacion		*
+ParentesAbre		(
+Real			-8.6
+Resta			-
+Variable		b
+ParentesCierra		)
+Division		/
+Real			6.1E-8
+
+Tipo			Valor
+----------------------------------------
+Variable		d
+Asignacion		=
+Variable		a
+Potencia		^
+Variable		b
+Comentario		// Esto es un comentario
+
+Tipo			Valor
+----------------------------------------
+Comentario		//coment
 
 Tipo			Valor
 ----------------------------------------
