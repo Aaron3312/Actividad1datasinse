@@ -1,20 +1,15 @@
-b=7
-a3 = 
-21
-a = 32.4 *(-8.6 - b)/       6.1E-8
-(a) =
-d = a ^ b // Esto es un comentario
-a$
-a = 32.4 *(-8.6 - b)/   6.1E-8 
-d = a ^ b // Esto es un comentario
--0.001E-3
-a - 132E-3
-a = a ** v
-)( 
-//coment
-a = 32.4 *(-8.6 - b)/ 
-6.1E-8
-// Esto es un comentario
-a = **
-=
-32
+Programa {
+
+  principal 
+
+    {
+
+           Entero a = 4;
+
+           Real b = 5.8E-8;
+
+           Entero serie = a * b * c + 9;
+
+    }
+
+}

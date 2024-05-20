@@ -1,69 +1,14 @@
 
 Tipo			Valor
 ----------------------------------------
-Variable		b
+Variable		Programa
+
+Tipo			Valor
+----------------------------------------
+Variable		principal
+
+Tipo			Valor
+----------------------------------------
+Variable		entero
 Asignacion		=
-Entero			7
-
-Tipo			Valor
-----------------------------------------
-Variable		a3
-Asignacion		=
-
-Tipo			Valor
-----------------------------------------
-Variable		a
-Asignacion		=
-Real			32.4
-Multiplicacion		*
-ParentesAbre		(
-Real			-8.6
-Resta			-
-Variable		b
-ParentesCierra		)
-Division		/
-Real			6.1E-8
-
-Tipo			Valor
-----------------------------------------
-Variable		d
-Asignacion		=
-Variable		a
-Potencia		^
-Variable		b
-Comentario		// Esto es un comentario
-
-Tipo			Valor
-----------------------------------------
-Variable		a
-
-Tipo			Valor
-----------------------------------------
-Variable		a
-Asignacion		=
-Real			32.4
-Multiplicacion		*
-ParentesAbre		(
-Real			-8.6
-Resta			-
-Variable		b
-ParentesCierra		)
-Division		/
-Real			6.1E-8
-
-Tipo			Valor
-----------------------------------------
-Variable		d
-Asignacion		=
-Variable		a
-Potencia		^
-Variable		b
-Comentario		// Esto es un comentario
-
-Tipo			Valor
-----------------------------------------
-Comentario		//coment
-
-Tipo			Valor
-----------------------------------------
-Comentario		// Esto es un comentario
+Entero			4
