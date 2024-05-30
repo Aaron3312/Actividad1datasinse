@@ -1,0 +1,35 @@
+Tipo	Valor
+--------------------------------------------------
+Variable	b
+Asignacion	=
+Entero		7
+Tipo	Valor
+--------------------------------------------------
+Variable	a
+Asignacion	=
+Real		32.4
+Operador	*
+ParentesisAbre	(
+Real		-8.6
+Operador	-
+Variable	b
+ParentesisCierra	)
+Operador	/
+Real		6.1E-8
+Tipo	Valor
+--------------------------------------------------
+Variable	d
+Asignacion	=
+Variable	a
+Operador	^
+Variable	b
+Comentario	// Esto es un comentario
+Tipo	Valor
+--------------------------------------------------
+Variable	a
+Asignacion	=
+Variable	a
+Tipo	Valor
+--------------------------------------------------
+Variable	a
+Asignacion	=

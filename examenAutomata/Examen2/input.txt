@@ -1,0 +1,15 @@
+Programa{
+
+  principal  
+    {
+
+           Entero a = 7;
+           Real c = 7.8;
+           d = (a + c) * 34;
+           Real b = 6.8E-4;
+           Entero serie = a * b * c + 2;
+           //dead
+           dwa (
+           dwadsa = 4;
+
+    }}

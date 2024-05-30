@@ -1,0 +1,64 @@
+
+Tipo			Valor
+----------------------------------------
+Variable		Programa
+
+Tipo			Valor
+----------------------------------------
+Variable		principal
+
+Tipo			Valor
+----------------------------------------
+Tipo			entero
+Variable		a
+Asignacion		=
+Entero			7
+
+Tipo			Valor
+----------------------------------------
+Tipo			real
+Variable		c
+Asignacion		=
+Real			7.8
+
+Tipo			Valor
+----------------------------------------
+Variable		d
+Asignacion		=
+ParentesAbre		(
+Variable		a
+Suma			+
+Variable		c
+ParentesCierra		)
+Multiplicacion		*
+Entero			34
+
+Tipo			Valor
+----------------------------------------
+Tipo			real
+Variable		b
+Asignacion		=
+Real			6.8E-4
+
+Tipo			Valor
+----------------------------------------
+Tipo			entero
+Variable		serie
+Asignacion		=
+Variable		a
+Multiplicacion		*
+Variable		b
+Multiplicacion		*
+Variable		c
+Suma			+
+Entero			2
+
+Tipo			Valor
+----------------------------------------
+Comentario		//dead
+
+Tipo			Valor
+----------------------------------------
+Variable		dwadsa
+Asignacion		=
+Entero			4
