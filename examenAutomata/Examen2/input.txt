@@ -3,16 +3,13 @@ Programa{
   principal  
     {
 
-           Entero a = 4;
-           Real c = 5.8;
-            d = (a + c) * 5;
-            sa (3
-           Real b = 5.8E-8;
-
-           Entero serie = a * b * c + 9;
-
-           a = 5 *
-            //dead
-           dwadsa = 5;
+           Entero a = 7;
+           Real c = 7.8;
+           d = (a + c) * 34;
+           Real b = 6.8E-4;
+           Entero serie = a * b * c + 2;
+           //dead
+           dwa (
+           dwadsa = 4;
 
     }}

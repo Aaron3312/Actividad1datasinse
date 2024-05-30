@@ -67,6 +67,7 @@ lexer ('C' : 'a' : 'r' : 'a' : 'c' : 't' : 'e' : 'r' : cs) = Tipo "caracter" : l
 lexer ('C' : 'a' : 'd' : 'e' : 'n' : 'a' : cs) = Tipo "cadena" : lexer cs -- Añadido manejo del tipo cadena
 
 
+
 lexer (c : cs)
   | isDigit c || (c == '-' && not (null cs) && (isDigit (head cs) || head cs == '.')) = lexNumberOrReal (c : cs) -- Ajuste para números negativos
   | isLetter c = lexIdentifier (c : cs) -- Añadido manejo de identificadores
@@ -460,7 +461,10 @@ main = do
       let table = tokensToTable tokens
       let tree = treeFromTokens tokens
       writeValidAndInvalidLines validationResults
-      -- writeTreeToFile tree
+      --Añadido para escribir el árbol en un archivo arbol.txt y limpiarlo antes de escribir
+
+
+
       limpiarArchivo "arbol.txt"
       derivacionA
       putStrLn "Tabla generada en output.txt"

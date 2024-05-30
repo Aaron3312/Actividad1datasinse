@@ -12,14 +12,14 @@ Tipo			Valor
 Tipo			entero
 Variable		a
 Asignacion		=
-Entero			4
+Entero			7
 
 Tipo			Valor
 ----------------------------------------
 Tipo			real
 Variable		c
 Asignacion		=
-Real			5.8
+Real			7.8
 
 Tipo			Valor
 ----------------------------------------
@@ -31,14 +31,14 @@ Suma			+
 Variable		c
 ParentesCierra		)
 Multiplicacion		*
-Entero			5
+Entero			34
 
 Tipo			Valor
 ----------------------------------------
 Tipo			real
 Variable		b
 Asignacion		=
-Real			5.8E-8
+Real			6.8E-4
 
 Tipo			Valor
 ----------------------------------------
@@ -51,7 +51,7 @@ Variable		b
 Multiplicacion		*
 Variable		c
 Suma			+
-Entero			9
+Entero			2
 
 Tipo			Valor
 ----------------------------------------
@@ -61,4 +61,4 @@ Tipo			Valor
 ----------------------------------------
 Variable		dwadsa
 Asignacion		=
-Entero			5
+Entero			4
