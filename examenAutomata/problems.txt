@@ -1,12 +1,9 @@
 Linea 2 Error: Linea vacia
 Linea 4 Error: Linea vacia
 Linea 5 Error: Linea vacia
-Linea 6 Error: Linea vacia
-Linea 8 Error: Linea vacia
-Linea 9 Error: No inicia con una variable
-Linea 10 Error: Linea vacia
-Linea 11 Error: No inicia con una variable
-Linea 12 Error: Linea vacia
+Linea 9 Error: Desequilibrio de parentesis
+Linea 11 Error: Linea vacia
 Linea 13 Error: Linea vacia
-Linea 14 Error: Linea vacia
-Linea 15 Error: Linea vacia
+Linea 14 Error: Operador sin operandos
+Linea 17 Error: Linea vacia
+Linea 18 Error: Linea vacia
