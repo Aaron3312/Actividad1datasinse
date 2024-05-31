@@ -1,113 +1,98 @@
--- Aaron Hernandez Jimenez A01642529
--- Actividad - Examen analizador sintáctico
--- Fecha de entrega: 20/3/2024
 
-import Control.Monad.RWS (MonadState (put)) -- Añadido import para manejar el estado del lexer
-import Data.Char (isDigit, isLetter, isSpace, isUpper, toLower, toUpper) -- Añadido import para manejar caracteres
-import Data.List (find, intercalate, isPrefixOf, isSuffixOf) -- Añadido import para manejar listas
-import Distribution.Compat.CharParsing (tab) -- Añadido import para manejar tabulaciones
+
 import Data.Tree
+import Data.List 
+import System.IO
+import Data.Text.Array 
 import Distribution.Simple.Build (build)
+
+import Data.Char 
 
 import Data.IORef
 import Control.Monad (when)
-import System.IO
-    ( hClose,
-      hPutStr,
-      hPutStrLn,
-      withFile,
-      IOMode(WriteMode, AppendMode) )
-import Data.Text.Array (new)
+import Control.Monad.RWS (MonadState (put)) 
 
 
 
-data Token -- Añadido token para manejar números enteros, reales, identificadores, comentarios, operadores y paréntesis
-  = Entero String -- Añadido token para números enteros
-  | Real String -- Añadido token para números reales
-  | Asignacion -- Añadido token para el operador de asignación
-  | Variable String -- Añadido token para identificadores
-  | Tipo String -- Añadido token para el tipo de variable
-  | Otro String -- Añadido token para otros tipos de variables
-  | Comentario String -- Añadido token para comentarios
-  | Multiplicacion -- Añadido token para el operador de multiplicación
-  | Division -- Añadido token para el operador de división
-  | Suma -- Añadido token para el operador de suma
-  | Resta -- Añadido token para el operador de resta
-  | Potencia -- Añadido token para el operador de potencia
-  | ParentesAbierto -- Añadido token para el paréntesis izquierdo
-  | ParentesCerrado -- Añadido token para el paréntesis derecho
+data Token 
+  = Entero String 
+  | Real String 
+  | Asignacion 
+  | Variable String 
+  | Tipo String 
+  | Otro String 
+  | Comentario String 
+  | Multiplicacion 
+  | Division
+  | Suma 
+  | Resta 
+  | Potencia 
+  | ParentesAbierto 
+  | ParentesCerrado 
   deriving (Show)
 
-type LineNumber = Int -- numero de linea
+type LineNumber = Int 
 
-type ValidationResult = Either String [Token] -- Ajustamos la función de validación para que devuelva Either String (para errores) o [Token] para una línea válida
+type ValidationResult = Either String [Token] 
 
--- Ajustamos la función de validación para que devuelva Either String (para errores) o [Token] para una línea válida
-
--- Añadido función para manejar el lexer
-lexer :: String -> [Token] -- el lexer funciona para separar los tokens de la cadena de texto que se le pasa como parametro y regresa una lista de tokens
+lexer :: String -> [Token] 
 lexer [] = []
-lexer ('/' : '/' : cs) = [Comentario ('/' : '/' : cs)] -- Maneja comentarios
-lexer ('i' : 'n' : 't' : ' ' : cs) = Tipo "int" : lexer cs -- Añadido manejo del tipo int
-lexer ('f' : 'l' : 'o' : 'a' : 't' : ' ' : cs) = Tipo "float" : lexer cs -- Añadido manejo del tipo float
-lexer ('d' : 'o' : 'u' : 'b' : 'l' : 'e' : ' ' : cs) = Tipo "double" : lexer cs -- Añadido manejo del tipo double
-lexer ('c' : 'h' : 'a' : 'r' : ' ' : cs) = Tipo "char" : lexer cs -- Añadido manejo del tipo char
-lexer ('s' : 't' : 'r' : 'i' : 'n' : 'g' : ' ' : cs) = Tipo "string" : lexer cs -- Añadido manejo del tipo string
-lexer ('b' : 'o' : 'o' : 'l' : ' ' : cs) = Tipo "bool" : lexer cs -- Añadido manejo del tipo bool
-lexer ('v' : 'o' : 'i' : 'd' : ' ' : cs) = Tipo "void" : lexer cs -- Añadido manejo del tipo void
-lexer ('c' : 'o' : 'n' : 's' : 't' : ' ' : cs) = Tipo "const" : lexer cs -- Añadido manejo del tipo const
-lexer ('u' : 'n' : 's' : 'i' : 'g' : 'n' : 'e' : 'd' : ' ' : cs) = Tipo "unsigned" : lexer cs -- Añadido manejo del tipo unsigned
-lexer ('l' : 'o' : 'n' : 'g' : ' ' : cs) = Tipo "long" : lexer cs -- Añadido manejo del tipo long
-lexer ('s' : 'h' : 'o' : 'r' : 't' : ' ' : cs) = Tipo "short" : lexer cs -- Añadido manejo del tipo short
---entero, real, flotante, doble, caracter, cadena, booleano, vacio, constante, sin signo, largo, corto
-lexer ('E' : 'n' : 't' : 'e' : 'r' : 'o' : cs) = Tipo "entero" : lexer cs -- Añadido manejo del tipo entero
-lexer ('R' : 'e' : 'a' : 'l' : cs) = Tipo "real" : lexer cs -- Añadido manejo del tipo real
-lexer ('F' : 'l' : 'o' : 't' : 'a' : 'n' : 't' : 'e' : cs) = Tipo "flotante" : lexer cs -- Añadido manejo del tipo flotante
-lexer ('D' : 'o' : 'b' : 'l' : 'e' : cs) = Tipo "doble" : lexer cs -- Añadido manejo del tipo doble
-lexer ('C' : 'a' : 'r' : 'a' : 'c' : 't' : 'e' : 'r' : cs) = Tipo "caracter" : lexer cs -- Añadido manejo del tipo caracter
-lexer ('C' : 'a' : 'd' : 'e' : 'n' : 'a' : cs) = Tipo "cadena" : lexer cs -- Añadido manejo del tipo cadena
+lexer ('/' : '/' : cs) = [Comentario ('/' : '/' : cs)]
+lexer ('i' : 'n' : 't' : ' ' : cs) = Tipo "int" : lexer cs 
+lexer ('f' : 'l' : 'o' : 'a' : 't' : ' ' : cs) = Tipo "float" : lexer cs 
+lexer ('d' : 'o' : 'u' : 'b' : 'l' : 'e' : ' ' : cs) = Tipo "double" : lexer cs 
+lexer ('c' : 'h' : 'a' : 'r' : ' ' : cs) = Tipo "char" : lexer cs 
+lexer ('s' : 't' : 'r' : 'i' : 'n' : 'g' : ' ' : cs) = Tipo "string" : lexer cs 
+lexer ('b' : 'o' : 'o' : 'l' : ' ' : cs) = Tipo "bool" : lexer cs 
+lexer ('v' : 'o' : 'i' : 'd' : ' ' : cs) = Tipo "void" : lexer cs 
+lexer ('c' : 'o' : 'n' : 's' : 't' : ' ' : cs) = Tipo "const" : lexer cs 
+lexer ('u' : 'n' : 's' : 'i' : 'g' : 'n' : 'e' : 'd' : ' ' : cs) = Tipo "unsigned" : lexer cs 
+lexer ('l' : 'o' : 'n' : 'g' : ' ' : cs) = Tipo "long" : lexer cs 
+lexer ('s' : 'h' : 'o' : 'r' : 't' : ' ' : cs) = Tipo "short" : lexer cs 
+lexer ('E' : 'n' : 't' : 'e' : 'r' : 'o' : cs) = Tipo "entero" : lexer cs 
+lexer ('R' : 'e' : 'a' : 'l' : cs) = Tipo "real" : lexer cs 
+lexer ('F' : 'l' : 'o' : 't' : 'a' : 'n' : 't' : 'e' : cs) = Tipo "flotante" : lexer cs 
+lexer ('D' : 'o' : 'b' : 'l' : 'e' : cs) = Tipo "doble" : lexer cs 
+lexer ('C' : 'a' : 'r' : 'a' : 'c' : 't' : 'e' : 'r' : cs) = Tipo "caracter" : lexer cs 
+lexer ('C' : 'a' : 'd' : 'e' : 'n' : 'a' : cs) = Tipo "cadena" : lexer cs 
 
 
 
 lexer (c : cs)
-  | isDigit c || (c == '-' && not (null cs) && (isDigit (head cs) || head cs == '.')) = lexNumberOrReal (c : cs) -- Ajuste para números negativos
-  | isLetter c = lexIdentifier (c : cs) -- Añadido manejo de identificadores
-  | c == '=' = Asignacion : lexer cs -- Añadido manejo del operador de asignación
-  | c == '+' = Suma : lexer cs -- Añadido manejo del operador de suma
-  | c == '-' = Resta : lexer cs -- Añadido manejo del operador de resta
-  | c == '/' = Division : lexer cs -- Añadido manejo del operador de división
-  | c == '*' = Multiplicacion : lexer cs -- Añadido manejo del operador de multiplicación
-  | c == '(' = ParentesAbierto : lexer cs -- Añadido manejo del paréntesis izquierdo
-  | c == ')' = ParentesCerrado : lexer cs -- Añadido manejo del paréntesis derecho
-  | c == '^' = Potencia : lexer cs -- Añadido manejo del operador de potencia
+  | isDigit c || (c == '-' && not (null cs) && (isDigit (head cs) || head cs == '.')) = lexNumberOrReal (c : cs) 
+  | isLetter c = lexIdentifier (c : cs) 
+  | c == '=' = Asignacion : lexer cs 
+  | c == '+' = Suma : lexer cs 
+  | c == '-' = Resta : lexer cs 
+  | c == '/' = Division : lexer cs 
+  | c == '*' = Multiplicacion : lexer cs 
+  | c == '(' = ParentesAbierto : lexer cs 
+  | c == ')' = ParentesCerrado : lexer cs 
+  | c == '^' = Potencia : lexer cs 
   | otherwise = lexer cs
 
--- Añadido función para manejar números
--- Función ajustada para manejar números, incluyendo negativos
--- funcion ajustada para manejar tambien los numeros reales
+
 lexNumberOrReal :: String -> [Token]
 lexNumberOrReal cs =
   let (num, rest) = span (\x -> isDigit x || x == '.' || x == 'E' || x == 'e' || x == '-' || (x == '-' && (not . null) cs && (isDigit (head cs) || head cs == '.'))) cs
    in case num of
-        ('-' : '.' : _) -> Real num : lexer rest -- Maneja números reales negativos con punto decimal al inicio
+        ('-' : '.' : _) -> Real num : lexer rest 
         ('-' : _) ->
           if 'E' `elem` num || 'e' `elem` num || '.' `elem` num
-            then Real num : lexer rest -- Números reales negativos con notación científica o punto decimal
-            else Entero num : lexer rest -- Números enteros negativos
+            then Real num : lexer rest 
+            else Entero num : lexer rest 
         _ ->
-          if 'E' `elem` num || 'e' `elem` num || '.' `elem` num -- Maneja números reales y enteros
-            then Real num : lexer rest -- Números reales
-            else Entero num : lexer rest -- Números enteros
+          if 'E' `elem` num || 'e' `elem` num || '.' `elem` num 
+            then Real num : lexer rest 
+            else Entero num : lexer rest 
 
--- Añadido función para manejar variables
--- funcion mejorada para aceptar variables con numeros y guiones bajos
+
 lexIdentifier :: String -> [Token]
 lexIdentifier cs =
     let (ident, rest) = span (\x -> isLetter x || isDigit x || x == '_') cs
      in Variable ident : lexer rest
 
--- Funcion necesaria para convertir los tokens en string para la tabla.
--- esto es para que se pueda imprimir de manera mas facil
+
 tokenToString :: Token -> String
 tokenToString token = case token of
   Entero n -> "Entero\t\t\t" ++ n
@@ -124,18 +109,14 @@ tokenToString token = case token of
   Division -> "Division\t\t/"
   Potencia -> "Potencia\t\t^"
 
--- Función para convertir la lista de tokens en una tabla
 tokensToTable :: [Token] -> String
 tokensToTable tokens =
-  let headers = "\nTipo\t\t\tValor\n" ++ replicate 40 '-' ++ "\n" -- Añadido encabezado para la tabla
-      rows = map tokenToString tokens -- Añadido conversión de tokens a strings
-   in headers ++ intercalate "\n" rows -- Añadido concatenación de encabezado y filas de la tabla
+  let headers = "\nTipo\t\t\tValor\n" ++ replicate 40 '-' ++ "\n" 
+      rows = map tokenToString tokens 
+   in headers ++ intercalate "\n" rows 
 
--- funcion con automata determinista para aprobar el lexer
 
--- funcion para comprobar que sea correcto el uso de los inputs en input.txt
 
--- Función para validar el correcto uso de tokens en la lista de tokens
 validateLineTokens :: [Token] -> ValidationResult -- Añadido tipo de retorno para la validación
 validateLineTokens tokens
   | null tokens = Left "Linea vacia"
@@ -275,23 +256,122 @@ writeTreeToFile tree = do
 
 --FINAL DE FUNCIONES DE LEXER
 
+
+
+
+
+
+
 --INICIO DE FUNCIONES DE ARBOL DE DERIVACION
 
 
 -- Declaración de un array
 
-type ParsedList = [(String, String)]
 
 
 
+type ParsedList = [(String, String)] --esto es mio
 
 
-arrayTipo :: Int -> [(String, String)] -> String
-arrayTipo n updatedList = fst (updatedList !! n)
+--banfunction
+-- Acceso a los valores del array
+primerValor :: Int -> [(String, String)] -> String
+primerValor n lista = fst (lista !! n)
 
-arrayValor :: Int -> [(String, String)] -> String
-arrayValor n updatedList = snd (updatedList !! n)
+-- Modificar la función segundoValor para aceptar una lista de pares (String, String)
+segundoValor :: Int -> [(String, String)] -> String
+segundoValor n lista = snd (lista !! n)
 
+
+-- Definición de la función while
+while :: IO Bool -> IO () -> IO ()
+while cond action = do
+    c <- cond
+    when c $ do
+        action
+        while cond action
+
+-- Función Renglon
+renglon :: IORef Int -> [(String, String)] -> IO ()
+renglon nRef arrayParesEs = do
+    i <- readIORef nRef
+    if i >= length arrayParesEs
+        then return ()
+        else do
+            if primerValor i arrayParesEs== "C"
+                then do
+                    putStr (segundoValor i arrayParesEs)
+                    putStrLn ""
+                else do
+                    when (primerValor i arrayParesEs== "PA") $ do
+                        putStr (segundoValor i arrayParesEs ++ " | ")
+                        let newQ = i + 1
+                        writeIORef nRef newQ
+                    i <- readIORef nRef
+                    when (primerValor i arrayParesEs== "E" || primerValor i arrayParesEs == "Rl" || primerValor i arrayParesEs== "V") $ do
+                        putStr (segundoValor i arrayParesEs)
+                        when (i + 1 < length arrayParesEs && primerValor (i + 1) arrayParesEs == "PC") $ do
+                            let newQ = i + 1
+                            writeIORef nRef newQ
+                            i <- readIORef nRef
+                            putStr (" | " ++ segundoValor newQ arrayParesEs)
+                    i <- readIORef nRef
+                    if i + 1 < length arrayParesEs && primerValor (i+1) arrayParesEs /= "E" && primerValor (i+1) arrayParesEs/= "Rl" && primerValor (i+1) arrayParesEs /= "V" && primerValor (i+1) arrayParesEs /= "Comentario" && primerValor (i+1) arrayParesEs /= "PA" && primerValor (i+1) arrayParesEs /= "PC" && primerValor (i+1)  arrayParesEs/= "D" && primerValor (i+1) arrayParesEs /= "End"
+                        then do
+                            let newQ = i + 2
+                            writeIORef nRef newQ
+                            i <- readIORef nRef
+                            putStr (" | " ++ segundoValor (newQ-1) arrayParesEs ++ " | ")
+                            renglon nRef arrayParesEs
+                        else if i + 1 < length arrayParesEs && primerValor(i+1) arrayParesEs == "Comentario"
+                            then do
+                                let newQ = i + 1
+                                writeIORef nRef newQ
+                                putStrLn (" | " ++ segundoValor newQ arrayParesEs)
+                            else do
+                                putStrLn ""
+                                return ()
+
+-- Función arbol que imprime algunos valores y luego ejecuta el bucle while
+arbol :: [(String, String)] -> IO ()
+arbol arrayParesEs = do
+    putStr "S -> "
+    putStrLn (segundoValor 0 arrayParesEs)
+    putStr "      programa{"
+    putStrLn " RF"
+    putStrLn ""
+    
+    ref <- newIORef ""
+    n <- newIORef 1
+    let condition = do
+            num <- readIORef n
+            return (primerValor num arrayParesEs /= "End")
+    let action = do
+            num <- readIORef n
+            if primerValor num arrayParesEs /= "Comentario"
+                then do
+                    putStr "            R -> TV=O RF |->"
+                    if primerValor num arrayParesEs == "D"
+                        then do
+                            putStr ("T -> " ++ segundoValor num arrayParesEs ++ " | " )
+                            writeIORef n (num + 1)
+                        else putStr "T -> eps | "
+                    num <- readIORef n
+                    putStr ("V -> " ++ segundoValor num arrayParesEs ++ " | = | ")
+                    writeIORef n (num + 2)
+                    num <- readIORef n
+                    putStr "O -> "
+                    renglon n arrayParesEs
+                    num <- readIORef n
+                    writeIORef n (num + 1)
+                    putStr ""
+                else putStrLn ("R -> "++ segundoValor num arrayParesEs)
+    while condition action
+    putStrLn ""
+    putStrLn "F -> }}"
+    putStrLn "¡Proceso completado!"
+
+--mi funcion
 
 escribirArchivo :: String -> IO ()
 escribirArchivo linea = withFile "arbol.txt" AppendMode (\handle -> do
@@ -309,105 +389,6 @@ pegarEnUltimaLinea archivo contenidoNuevo = do
     putStrLn nuevoContenido
     writeFile archivo nuevoContenido
 
-while :: IO Bool -> IO () -> IO ()
-while cond accion = do
-    c <- cond
-    when c $ do
-        accion
-        while cond accion
-
-operacion :: [(String, String)] -> IORef Int -> IO ()
-operacion updatedList nRef = do
-    i <- readIORef nRef
-    if i >= length updatedList
-        then return ()
-        else do
-            if arrayTipo i updatedList == "Comentario"
-                then do
-                    let linea = arrayValor i updatedList ++ ", "
-                    pegarEnUltimaLinea "arbol.txt" linea
-                    putStrLn ""
-                else do
-                    when (arrayTipo i updatedList == "ParentesisAbre") $ do
-                        let linea = arrayValor i updatedList ++ ", "
-                        pegarEnUltimaLinea "arbol.txt" linea
-                        let newQ = i + 1
-                        writeIORef nRef newQ
-                    i <- readIORef nRef
-                    when (arrayTipo i updatedList == "Entero" || arrayTipo i updatedList == "Real" || arrayTipo i updatedList == "Variable") $ do
-                        let linea = arrayValor i updatedList ++ ", "
-                        pegarEnUltimaLinea "arbol.txt" linea
-                        when (i + 1 < length updatedList && arrayTipo (i + 1) updatedList == "ParentesisCierra") $ do
-                            let newQ = i + 1
-                            writeIORef nRef newQ
-                            i <- readIORef nRef
-                            let linea = arrayValor newQ updatedList ++ ", "
-                            pegarEnUltimaLinea "arbol.txt" linea
-                    i <- readIORef nRef
-                    if i + 1 < length updatedList && arrayTipo (i+1) updatedList /= "Entero" && arrayTipo (i+1) updatedList /= "Real" && arrayTipo (i+1) updatedList /= "Variable" && arrayTipo (i+1) updatedList /= "Comentario" && arrayTipo (i+1) updatedList /= "ParentesisAbre" && arrayTipo (i+1) updatedList /= "ParentesisCierra" && arrayTipo (i+1) updatedList /= "Tipo" && arrayTipo (i+1) updatedList /= "Final"
-                        then do
-                            let newQ = i + 2
-                            writeIORef nRef newQ
-                            i <- readIORef nRef
-                            let linea = arrayValor (newQ-1) updatedList ++ ", "
-                            pegarEnUltimaLinea "arbol.txt" linea
-                            operacion updatedList nRef
-                        else if i + 1 < length updatedList && arrayTipo(i+1) updatedList == "Comentario"
-                            then do
-                                let newQ = i + 1
-                                writeIORef nRef newQ
-                                let linea = arrayValor newQ updatedList ++ ", "
-                                pegarEnUltimaLinea "arbol.txt" linea
-                            else do
-                                putStrLn ""
-                                return ()
-
-
-
-derivacionA :: [(String, String)] -> IO ()
-derivacionA updatedList = do
-    -- Escribe solo una vez el encabezado y el comienzo del programa.
-    escribirArchivo "S" 
-    escribirArchivo "-------------------------------------------------" 
-    escribirArchivo "IQF" 
-    escribirArchivo "-------------------------------------------------" 
-    escribirArchivo "Programa{" 
-    escribirArchivo "   principal" 
-    escribirArchivo "       {" 
-    n <- newIORef 1
-    let condition = do
-            num <- readIORef n
-            return (arrayTipo num updatedList /= "Final")
-    let accion = do
-            num <- readIORef n
-            if arrayTipo num updatedList /= "Comentario"
-                then do
-                    escribirArchivo "           Q [Q1 = Q2] || "
-                    if arrayTipo num updatedList == "Tipo" 
-                        then do
-                            let linea = "Q1 [A B] || A ["++ arrayValor num updatedList ++"] ||"
-                            pegarEnUltimaLinea "arbol.txt" linea
-                            writeIORef n (num + 1)
-                        else pegarEnUltimaLinea "arbol.txt" "Q1 [B] || = || "
-                    num <- readIORef n
-                    let linea = "B [" ++ arrayValor num updatedList ++ "] || "
-                    pegarEnUltimaLinea "arbol.txt" linea
-                    writeIORef n (num + 2)
-                    num <- readIORef n
-                    pegarEnUltimaLinea "arbol.txt" "Q2 ["
-                    operacion updatedList n
-                    num <- readIORef n
-                    writeIORef n (num + 1)
-                    pegarEnUltimaLinea "arbol.txt" ";]"
-                else do
-                    let linea = "           Q [" ++ arrayValor num updatedList ++ "]"
-                    escribirArchivo linea
-    -- Comienza a ejecutar las acciones solo después de configurar todo.
-    while condition accion
-    escribirArchivo "       }" 
-    escribirArchivo "}" 
-    escribirArchivo "-------------------------------------------------" 
-
 
 
 -- Función para limpiar un archivo    
@@ -416,12 +397,13 @@ limpiarArchivo archivo = withFile archivo WriteMode (\handle -> hPutStr handle "
 
 
 
--- Función principal del programa
+
+
 --FIN DEL ARBOL DE DERIVACION
 
 -- Función para actualizar la lista basada en el contenido del archivo
 updateListaOut :: String -> ParsedList
-updateListaOut content = [("Inicio", "Programa{principal{")] ++ parseOutput (lines content) ++ [("Final", "}}")]
+updateListaOut content = [("S", "Programa{")] ++ parseOutput (lines content) ++ [("End", "}}")]
 
 
 
@@ -456,20 +438,21 @@ parseLine line =
     let (tipo, valor) = break (== '\t') line
     in (tipo, dropWhile (== '\t') (drop 1 valor))
 
--- Function to map the type strings to desired output
 mapType :: String -> String
-mapType "Variable" = "Variable"
+mapType "Variable" = "V"
 mapType "Asignacion" = "Igual"
-mapType "Entero" = "Entero"
-mapType "Real" = "Real"
-mapType "Suma" = "Suma"
+mapType "Entero" = "E"
+mapType "Real" = "Rl"
+mapType "Suma" = "+"
 mapType "Multiplicacion" = "Multi"
-mapType "ParentesAbre" = "ParentesisAbre"
-mapType "ParentesCierra" = "ParentesisCierra"
+mapType "Resta" = "Resta"
+mapType "Division" = "Division"
+mapType "Potencia" = "Exp"
+mapType "ParentesAbre" = "PA"
+mapType "ParentesCierra" = "PC"
 mapType "Comentario" = "Comentario"
 mapType _ = "Unknown"
 
--- Function to decide if a block should be ignored
 shouldIgnoreBlock :: [String] -> Bool
 shouldIgnoreBlock block =
     let lines = filter (not . null) block
@@ -482,10 +465,14 @@ finalListaOut = do
     let linesOfFile = lines content
     let parsedList = parseOutput linesOfFile
     -- Add the initial and final elements to the parsed list
-    return ([("Inicio", "Programa{principal{")] ++ parsedList ++ [("Final", "}}")])
+    return ([("S", "Programa{")] ++ parsedList ++ [("End", "}}")])
 
+-- ###############FINAL DE FUNCIONES DE ARBOL DE DERIVACION####################
     
--- Función para probar el lexer con un archivo
+
+
+
+-- FUNCION PRINCIPAL MAIN
 main :: IO ()
 main = do
   putStrLn "Analizando el archivo input.txt..."
@@ -515,11 +502,10 @@ main = do
       let updatedList = updateListaOut content  -- Crea la lista actualizada
       -- Llamada a otra función que necesita usar updatedList
       print updatedList
+      arbol updatedList 
 
-      limpiarArchivo "arbol.txt"
-      derivacionA updatedList
-      putStrLn "Tabla generada en output.txt"
-      putStrLn "Guardando los problemas en problemas.txt"
-      putStrLn "Guardando el árbol de derivación en arbol.txt"
+
+
+      putStrLn "Listo."
   putStrLn "Análisis completado."
   

@@ -1,6 +1,5 @@
 Linea 2 Error: Linea vacia
 Linea 4 Error: Linea vacia
 Linea 5 Error: Linea vacia
-Linea 12 Error: Desequilibrio de parentesis
+Linea 13 Error: Linea vacia
 Linea 14 Error: Linea vacia
-Linea 15 Error: Linea vacia

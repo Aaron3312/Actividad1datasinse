@@ -463,6 +463,9 @@ mapType "Asignacion" = "Igual"
 mapType "Entero" = "Entero"
 mapType "Real" = "Real"
 mapType "Suma" = "Suma"
+mapType "Resta" = "Resta"
+mapType "Division" = "Division"
+mapType "Potencia" = "Potencia"
 mapType "Multiplicacion" = "Multi"
 mapType "ParentesAbre" = "ParentesisAbre"
 mapType "ParentesCierra" = "ParentesisCierra"
@@ -485,7 +488,10 @@ finalListaOut = do
     return ([("Inicio", "Programa{principal{")] ++ parsedList ++ [("Final", "}}")])
 
     
--- Función para probar el lexer con un archivo
+
+
+
+-- FUNCION PRINCIPAL MAIN PARA EJECUTAR EL PROGRAMA
 main :: IO ()
 main = do
   putStrLn "Analizando el archivo input.txt..."

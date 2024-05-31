@@ -9,7 +9,6 @@ Programa{
            Real b = 6.8E-4;
            Entero serie = a * b * c + 2;
            //dead
-           dwa (
            dwadsa = 4;
 
     }}
