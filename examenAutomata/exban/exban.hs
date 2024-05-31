@@ -24,7 +24,7 @@ lexicalAnalyzer (c : cs)
   | isDigit c || (c == '-' && not (null cs) && (isDigit (head cs) || head cs == '.')) = lexNoR (c : cs)
   | isLetter c || c == '_' = iDentif (c : cs)
   | c == '=' = Asignacion : lexicalAnalyzer cs
-  | elem c "+-*/^" = Operador [c] : lexicalAnalyzer cs
+  | elem c "+-*/^" = Operador [c] : lexicalAnalyzer cs 
   | c == '(' = ParentesisOp : lexicalAnalyzer cs
   | c == ')' = ParentesisCls : lexicalAnalyzer cs
   | otherwise = lexicalAnalyzer cs

@@ -1,6 +1,6 @@
 -- Aaron Hernandez Jimenez A01642529
 -- Actividad - Examen analizador sintáctico
--- Fecha de entrega: 30/5/2024
+-- Fecha de entrega: 20/3/2024
 
 import Control.Monad.RWS (MonadState (put)) -- Añadido import para manejar el estado del lexer
 import Data.Char (isDigit, isLetter, isSpace, isUpper, toLower, toUpper) -- Añadido import para manejar caracteres

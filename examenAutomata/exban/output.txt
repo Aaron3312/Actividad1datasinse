@@ -1,10 +1,5 @@
 Tipo	Valor
 --------------------------------------------------
-Variable	b
-Asignacion	=
-Entero		7
-Tipo	Valor
---------------------------------------------------
 Variable	a
 Asignacion	=
 Real		32.4

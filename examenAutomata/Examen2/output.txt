@@ -12,6 +12,8 @@ Tipo			Valor
 Tipo			entero
 Variable		a
 Asignacion		=
+Entero			2
+Potencia		^
 Entero			7
 
 Tipo			Valor
